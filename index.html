@@ -15,6 +15,10 @@
             --vermilion: #b73524;
             --gold: #ad7c35;
         }
+        html,
+        body {
+            overflow-x: hidden;
+        }
         body[data-theme="indigo"] {
             --paper: #edf0e6;
             --paper-deep: #d6ddcf;
@@ -133,6 +137,65 @@
             background: var(--vermilion);
             border-color: var(--vermilion);
             box-shadow: 3px 3px 0 color-mix(in srgb, var(--vermilion) 22%, transparent);
+        }
+        .hyper-frame {
+            display: flex;
+            gap: 14px;
+            overflow-x: auto;
+            overscroll-behavior-x: contain;
+            scroll-snap-type: x mandatory;
+            padding: 6px 0 18px;
+        }
+        .hyper-frame::-webkit-scrollbar {
+            height: 6px;
+        }
+        .hyper-frame::-webkit-scrollbar-thumb {
+            background: var(--vermilion);
+        }
+        .hyper-card {
+            position: relative;
+            flex: 0 0 clamp(260px, 34vw, 420px);
+            min-height: 360px;
+            overflow: hidden;
+            scroll-snap-align: center;
+            border: 1px solid color-mix(in srgb, var(--ink) 24%, transparent);
+            background: color-mix(in srgb, var(--paper) 82%, white);
+            box-shadow: 6px 6px 0 color-mix(in srgb, var(--indigo) 16%, transparent);
+        }
+        .hyper-card img {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            opacity: 0.82;
+            mix-blend-mode: multiply;
+            transition: transform 800ms ease, opacity 800ms ease;
+        }
+        .hyper-card:hover img {
+            transform: scale(1.06);
+            opacity: 0.96;
+        }
+        .hyper-card::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background:
+                linear-gradient(to top, color-mix(in srgb, var(--paper) 96%, transparent), color-mix(in srgb, var(--paper) 18%, transparent) 56%, color-mix(in srgb, var(--indigo) 16%, transparent)),
+                repeating-linear-gradient(90deg, rgba(25, 23, 19, 0.06) 0 1px, transparent 1px 7px);
+        }
+        .hyper-card-body {
+            position: absolute;
+            left: 22px;
+            right: 22px;
+            bottom: 22px;
+            z-index: 1;
+        }
+        @media (max-width: 640px) {
+            .hyper-card {
+                flex-basis: 82vw;
+                min-height: 330px;
+            }
         }
     </style>
 </head>
@@ -637,7 +700,66 @@
         }
 
         function getStoryHeroImage() {
-            return 'assets/akshura-crimson.jpg';
+            return 'assets/ukiyo-edo-guitar-duel.jpg';
+        }
+
+        function hyperFrameShowcase() {
+            const frames = [
+                {
+                    image: 'assets/ukiyo-wave-hero.png',
+                    label: 'Frame 01',
+                    title: '纸本波浪',
+                    text: '先用浮世绘波浪建立浅色版的空气感，让品牌像一张展开的画卷。'
+                },
+                {
+                    image: 'assets/ukiyo-shura-guitar.png',
+                    label: 'Frame 02',
+                    title: '修罗入画',
+                    text: '保留修罗与电吉他的核心，只把语言换成木版画的纹理。'
+                },
+                {
+                    image: 'assets/ukiyo-edo-guitar-duel.jpg',
+                    label: 'Frame 03',
+                    title: '江户双琴',
+                    text: '让产品进入街景和传说，形成可以继续扩写的品牌世界观。'
+                },
+                {
+                    image: 'assets/banner-electric-guitars.png',
+                    label: 'Frame 04',
+                    title: '产品图谱',
+                    text: '产品分类像器物图鉴，保留未来扩充系列和大类的空间。'
+                },
+                {
+                    image: 'assets/brand-element-uucmpy.jpg',
+                    label: 'Frame 05',
+                    title: '赤红印记',
+                    text: '即使是浅色版，也保留赤红修罗的识别，避免变成完全不同品牌。'
+                }
+            ];
+
+            return `
+                <section class="col-span-3 max-w-6xl mx-auto my-10 md:my-14 overflow-hidden">
+                    <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-5 mb-5">
+                        <div>
+                            <p class="text-[10px] uppercase tracking-[0.38em] text-[#b73524] mb-3">Hyper Frame Story</p>
+                            <h2 class="text-3xl md:text-5xl font-black uppercase leading-none text-[#191713]">浮世绘分镜墙</h2>
+                        </div>
+                        <p class="max-w-lg text-sm text-[#3c3328] leading-relaxed">同样保留横向滑动分镜，但视觉从黑红战斗感改成纸本、靛蓝、朱红的画卷感。</p>
+                    </div>
+                    <div class="hyper-frame">
+                        ${frames.map(frame => `
+                            <figure class="hyper-card">
+                                <img src="${frame.image}" alt="${frame.title}">
+                                <figcaption class="hyper-card-body">
+                                    <p class="text-[10px] uppercase tracking-[0.3em] text-[#b73524] mb-3">${frame.label}</p>
+                                    <h3 class="text-2xl md:text-3xl font-black uppercase leading-none text-[#191713]">${frame.title}</h3>
+                                    <p class="mt-4 text-sm text-[#3c3328] leading-relaxed">${frame.text}</p>
+                                </figcaption>
+                            </figure>
+                        `).join('')}
+                    </div>
+                </section>
+            `;
         }
 
         async function renderHomeFamilies() {
@@ -977,6 +1099,7 @@
                             </div>
                         </div>
                     </section>
+                    ${hyperFrameShowcase()}
                     <section class="col-span-3 grid grid-cols-1 md:grid-cols-3 gap-5 md:gap-6">
                         ${storyCards || storyGuide()}
                     </section>
@@ -995,15 +1118,16 @@
             const content = renderRichText(fields.storyBox?.content || []);
 
             view.innerHTML = `
-                <article class="col-span-3 max-w-5xl mx-auto bg-black/75 border border-white/10 shadow-2xl backdrop-blur-sm overflow-hidden">
-                    <div class="relative min-h-[320px] md:min-h-[460px] bg-black">
-                        <img src="${getStoryHeroImage()}" class="absolute inset-0 w-full h-full object-cover opacity-70" alt="AKSHURA 吉他故事横幅">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black via-black/50 to-transparent"></div>
+                <article class="col-span-3 max-w-5xl mx-auto paper-panel overflow-hidden">
+                    <div class="relative min-h-[320px] md:min-h-[460px] bg-[#ead7b3]">
+                        <img src="${getStoryHeroImage()}" class="absolute inset-0 w-full h-full object-cover opacity-85 mix-blend-multiply" alt="AKASHURA 浮世绘故事横幅">
+                        <div class="absolute inset-0 bg-gradient-to-t from-[#f8efd9] via-[#f8efd9]/35 to-transparent"></div>
                         <div class="absolute left-6 right-6 bottom-6 md:left-10 md:right-10 md:bottom-10">
-                            <button onclick="renderStoryHub()" class="mb-5 text-xs uppercase tracking-[0.28em] text-red-400 hover:text-white">Story 总览</button>
-                            <h1 class="text-3xl md:text-6xl font-black uppercase leading-tight">${fields.brandStory || '品牌故事'}</h1>
+                            <button onclick="renderStoryHub()" class="mb-5 text-xs uppercase tracking-[0.28em] text-[#b73524] hover:text-[#191713]">Story 总览</button>
+                            <h1 class="text-3xl md:text-6xl font-black uppercase leading-tight text-[#191713]">${fields.brandStory || '品牌故事'}</h1>
                         </div>
                     </div>
+                    ${hyperFrameShowcase()}
                     <div class="p-7 md:p-12">
                         ${content || '<p class="text-gray-300 leading-relaxed">这篇故事已经建立，内容可以继续从 Contentful 补齐。</p>'}
                     </div>
