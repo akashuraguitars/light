@@ -15,10 +15,34 @@
             --vermilion: #b73524;
             --gold: #ad7c35;
         }
+        body[data-theme="indigo"] {
+            --paper: #edf0e6;
+            --paper-deep: #d6ddcf;
+            --ink: #15202a;
+            --indigo: #123d63;
+            --vermilion: #a33b2f;
+            --gold: #94713d;
+        }
+        body[data-theme="vermilion"] {
+            --paper: #f3e2cf;
+            --paper-deep: #e5c3a5;
+            --ink: #241713;
+            --indigo: #253f55;
+            --vermilion: #c2412d;
+            --gold: #a06a28;
+        }
+        body[data-theme="sumi"] {
+            --paper: #e9e1d1;
+            --paper-deep: #d4c7b4;
+            --ink: #111111;
+            --indigo: #24313a;
+            --vermilion: #9f3025;
+            --gold: #826a45;
+        }
         body {
             color: var(--ink);
             background:
-                linear-gradient(rgba(244, 234, 214, 0.82), rgba(244, 234, 214, 0.92)),
+                linear-gradient(color-mix(in srgb, var(--paper) 82%, transparent), color-mix(in srgb, var(--paper) 92%, transparent)),
                 url('assets/ukiyo-wave-hero.png'),
                 radial-gradient(circle at 14% 18%, rgba(183, 53, 36, 0.12), transparent 28%),
                 radial-gradient(circle at 82% 24%, rgba(25, 58, 90, 0.12), transparent 30%),
@@ -26,6 +50,7 @@
                 var(--paper);
             background-size: cover, 680px auto, auto, auto, auto, auto;
             background-attachment: fixed, fixed, fixed, fixed, fixed, fixed;
+            transition: background-color 180ms ease, color 180ms ease;
         }
         body::before {
             content: "";
@@ -40,14 +65,34 @@
             mix-blend-mode: multiply;
         }
         .paper-panel {
-            background: rgba(244, 234, 214, 0.88);
+            background: color-mix(in srgb, var(--paper) 88%, white);
             border: 1px solid rgba(25, 23, 19, 0.22);
-            box-shadow: 10px 10px 0 rgba(25, 58, 90, 0.16);
+            box-shadow: 10px 10px 0 color-mix(in srgb, var(--indigo) 18%, transparent);
         }
         .ukiyo-card {
-            background: #f8efd9;
+            background: color-mix(in srgb, var(--paper) 88%, white);
             border: 1px solid rgba(25, 23, 19, 0.24);
-            box-shadow: 6px 6px 0 rgba(183, 53, 36, 0.16);
+            box-shadow: 6px 6px 0 color-mix(in srgb, var(--vermilion) 18%, transparent);
+        }
+        .theme-nav {
+            background: color-mix(in srgb, var(--paper) 95%, white);
+            color: var(--ink);
+            border-color: color-mix(in srgb, var(--ink) 20%, transparent);
+        }
+        .theme-brand {
+            background: var(--paper);
+            border-color: color-mix(in srgb, var(--ink) 20%, transparent);
+        }
+        .theme-slogan {
+            color: var(--vermilion);
+        }
+        .theme-menu {
+            background: color-mix(in srgb, var(--paper) 90%, white);
+            color: var(--ink);
+            border-color: color-mix(in srgb, var(--ink) 25%, transparent);
+        }
+        .theme-link:hover {
+            color: var(--vermilion);
         }
         .seal {
             display: inline-grid;
@@ -71,27 +116,38 @@
             display: block;
             transform: scaleX(0.82);
         }
+        .theme-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 999px;
+            border: 1px solid rgba(25, 23, 19, 0.36);
+            box-shadow: 2px 2px 0 rgba(25, 23, 19, 0.12);
+        }
+        .theme-dot[aria-pressed="true"] {
+            outline: 2px solid var(--vermilion);
+            outline-offset: 3px;
+        }
     </style>
 </head>
-<body class="text-[#191713]">
+<body>
 
     <!-- 导航列 -->
-    <nav class="bg-[#f4ead6]/95 text-[#191713] p-2 md:p-5 sticky top-0 z-50 border-b border-[#191713]/20 backdrop-blur">
+    <nav class="theme-nav p-2 md:p-5 sticky top-0 z-50 border-b backdrop-blur">
         <div class="w-full px-1 flex flex-wrap justify-center items-center gap-x-2 md:gap-x-8 text-[9px] md:text-sm uppercase font-light">
             <ul class="flex items-center text-[9px] md:text-sm uppercase font-light" style="gap: clamp(0.25rem, 3vw, 2rem);">
                 <li class="relative">
-                    <a href="index.html" onclick="event.preventDefault(); renderHome();" class="hover:text-[#b73524]">HOME</a>
+                    <a href="index.html" onclick="event.preventDefault(); renderHome();" class="theme-link">HOME</a>
                 </li>
                 <li class="relative">
-                    <button onclick="toggleStory()" class="hover:text-[#b73524]">STORY</button>
-                    <div id="story-dropdown" class="absolute right-0 mt-2 w-64 max-h-[70vh] overflow-y-auto bg-[#f8efd9] text-[#191713] border border-[#191713]/25 shadow-xl hidden p-2 z-50"></div>
+                    <button onclick="toggleStory()" class="theme-link">STORY</button>
+                    <div id="story-dropdown" class="theme-menu absolute right-0 mt-2 w-64 max-h-[70vh] overflow-y-auto border shadow-xl hidden p-2 z-50"></div>
                 </li>
                 <li class="relative">
-                    <button onclick="renderNews()" class="hover:text-[#b73524]">NEWS</button>
+                    <button onclick="renderNews()" class="theme-link">NEWS</button>
                 </li>
                 <li class="relative">
-                    <button onclick="toggleProducts()" class="hover:text-[#b73524]">PRODUCTS</button>
-                    <div id="dropdown-menu" class="absolute right-0 mt-2 w-56 max-h-[70vh] overflow-y-auto bg-[#f8efd9] text-[#191713] border border-[#191713]/25 shadow-xl hidden p-2 z-50"></div>
+                    <button onclick="toggleProducts()" class="theme-link">PRODUCTS</button>
+                    <div id="dropdown-menu" class="theme-menu absolute right-0 mt-2 w-56 max-h-[70vh] overflow-y-auto border shadow-xl hidden p-2 z-50"></div>
                 </li>
                 <li class="text-[#191713]/35 cursor-not-allowed">ARTISTS</li>
                 <li class="text-[#191713]/35 cursor-not-allowed">CONTACT</li>
@@ -100,13 +156,19 @@
     </nav>
 
     <!-- 中间品牌区块 -->
-    <div id="brand-header" class="flex flex-col items-center justify-center py-2 bg-[#f4ead6] border-b border-[#191713]/20 px-4">
+    <div id="brand-header" class="theme-brand flex flex-col items-center justify-center py-2 border-b px-4">
         <div class="w-[85%] md:w-[45%] max-w-[650px] flex flex-col items-center">
             <div id="brand-logo-container" class="w-full flex justify-center mb-0">
                 <img id="brand-image" src="logo.png" alt="Akashura Guitars" class="w-full h-auto object-contain sepia saturate-[170%] hue-rotate-[345deg] contrast-125">
             </div>
             <h1 id="brand-title" class="text-4xl md:text-5xl font-extrabold tracking-widest text-[#191713] uppercase hidden">Akashura Guitars</h1>
-            <p id="brand-slogan" class="w-full text-center text-[9px] md:text-xs text-[#b73524] font-light uppercase mt-1 tracking-[0.26em] md:tracking-[0.43em] whitespace-nowrap pl-[0.26em] md:pl-[0.43em]">Built for Your Own Sound</p>
+            <p id="brand-slogan" class="theme-slogan w-full text-center text-[9px] md:text-xs font-light uppercase mt-1 tracking-[0.26em] md:tracking-[0.43em] whitespace-nowrap pl-[0.26em] md:pl-[0.43em]">Built for Your Own Sound</p>
+            <div id="theme-switcher" class="mt-3 flex items-center justify-center gap-3" aria-label="切换颜色主题">
+                <a class="theme-dot bg-[#f4ead6]" href="index.html?theme=ukiyo" role="button" data-theme-option="ukiyo" title="纸本" aria-label="切换为纸本主题"></a>
+                <a class="theme-dot bg-[#123d63]" href="index.html?theme=indigo" role="button" data-theme-option="indigo" title="靛蓝" aria-label="切换为靛蓝主题"></a>
+                <a class="theme-dot bg-[#c2412d]" href="index.html?theme=vermilion" role="button" data-theme-option="vermilion" title="朱红" aria-label="切换为朱红主题"></a>
+                <a class="theme-dot bg-[#111111]" href="index.html?theme=sumi" role="button" data-theme-option="sumi" title="墨黑" aria-label="切换为墨黑主题"></a>
+            </div>
         </div>
     </div>
 
@@ -236,6 +298,28 @@
 
         function toggleProducts() { dropdown.classList.toggle('hidden'); storyDropdown.classList.add('hidden'); }
         function toggleStory() { storyDropdown.classList.toggle('hidden'); dropdown.classList.add('hidden'); }
+        window.setTheme = function setTheme(theme) {
+            const normalized = theme === 'ukiyo' ? '' : theme;
+            document.body.dataset.theme = normalized;
+            localStorage.setItem('akashuraTheme', theme);
+            document.querySelectorAll('.theme-dot').forEach(button => {
+                button.setAttribute('aria-pressed', button.dataset.themeOption === theme ? 'true' : 'false');
+            });
+        };
+        document.addEventListener('click', event => {
+            const button = event.target.closest('[data-theme-option]');
+            if (button) {
+                event.preventDefault();
+                setTheme(button.dataset.themeOption);
+            }
+        });
+        document.querySelectorAll('[data-theme-option]').forEach(button => {
+            const url = new URL(location.href);
+            url.searchParams.set('theme', button.dataset.themeOption);
+            button.href = `${url.pathname}${url.search}${url.hash}`;
+        });
+        const themeParam = new URLSearchParams(location.search).get('theme');
+        setTheme(themeParam || localStorage.getItem('akashuraTheme') || 'ukiyo');
 
         function getImageUrl(fields) {
             const img = fields.image || fields.seriesImage || fields.subseriesImage;
