@@ -81,16 +81,23 @@
             color: var(--ink);
             border-color: color-mix(in srgb, var(--ink) 25%, transparent);
         }
-        .theme-dot {
-            width: 22px;
-            height: 22px;
-            border-radius: 999px;
-            border: 1px solid rgba(25, 23, 19, 0.36);
-            box-shadow: 2px 2px 0 rgba(25, 23, 19, 0.12);
+        .mode-link {
+            min-width: 104px;
+            padding: 8px 12px;
+            border: 1px solid color-mix(in srgb, var(--ink) 28%, transparent);
+            color: var(--ink);
+            background: color-mix(in srgb, var(--paper) 72%, white);
+            font-size: 10px;
+            letter-spacing: 0.18em;
+            text-align: center;
+            text-transform: uppercase;
+            box-shadow: 3px 3px 0 color-mix(in srgb, var(--indigo) 14%, transparent);
         }
-        .theme-dot[aria-pressed="true"] {
-            outline: 2px solid var(--vermilion);
-            outline-offset: 3px;
+        .mode-link.active {
+            color: var(--paper);
+            background: var(--vermilion);
+            border-color: var(--vermilion);
+            box-shadow: 3px 3px 0 color-mix(in srgb, var(--vermilion) 22%, transparent);
         }
     </style>
 </head>
@@ -129,11 +136,9 @@
             </div>
             <h1 id="brand-title" class="text-4xl md:text-5xl font-extrabold tracking-widest text-[#191713] uppercase hidden">Akashura Guitars</h1>
             <p id="brand-slogan" class="theme-slogan w-full text-center text-[9px] md:text-xs font-light uppercase mt-1 tracking-[0.26em] md:tracking-[0.43em] whitespace-nowrap pl-[0.26em] md:pl-[0.43em]">Built for Your Own Sound</p>
-            <div id="theme-switcher" class="mt-3 flex items-center justify-center gap-3" aria-label="切换颜色主题">
-                <a class="theme-dot bg-[#f4ead6]" href="detail.html?theme=ukiyo" role="button" data-theme-option="ukiyo" title="纸本" aria-label="切换为纸本主题"></a>
-                <a class="theme-dot bg-[#123d63]" href="detail.html?theme=indigo" role="button" data-theme-option="indigo" title="靛蓝" aria-label="切换为靛蓝主题"></a>
-                <a class="theme-dot bg-[#c2412d]" href="detail.html?theme=vermilion" role="button" data-theme-option="vermilion" title="朱红" aria-label="切换为朱红主题"></a>
-                <a class="theme-dot bg-[#111111]" href="detail.html?theme=sumi" role="button" data-theme-option="sumi" title="墨黑" aria-label="切换为墨黑主题"></a>
+            <div id="mode-switcher" class="mt-3 flex items-center justify-center gap-2" aria-label="切换网站模式">
+                <a class="mode-link active" href="index.html" aria-current="page">浮世绘模式</a>
+                <a id="shura-mode-link" class="mode-link" href="https://akashuraguitars.github.io/test/">修罗模式</a>
             </div>
         </div>
     </div>
@@ -158,28 +163,10 @@
 
         function toggleProducts() { dropdown.classList.toggle('hidden'); storyDropdown.classList.add('hidden'); }
         function toggleStory() { storyDropdown.classList.toggle('hidden'); dropdown.classList.add('hidden'); }
-        window.setTheme = function setTheme(theme) {
-            const normalized = theme === 'ukiyo' ? '' : theme;
-            document.body.dataset.theme = normalized;
-            localStorage.setItem('akashuraTheme', theme);
-            document.querySelectorAll('.theme-dot').forEach(button => {
-                button.setAttribute('aria-pressed', button.dataset.themeOption === theme ? 'true' : 'false');
-            });
-        };
-        document.addEventListener('click', event => {
-            const button = event.target.closest('[data-theme-option]');
-            if (button) {
-                event.preventDefault();
-                setTheme(button.dataset.themeOption);
-            }
-        });
-        document.querySelectorAll('[data-theme-option]').forEach(button => {
-            const url = new URL(location.href);
-            url.searchParams.set('theme', button.dataset.themeOption);
-            button.href = `${url.pathname}${url.search}${url.hash}`;
-        });
-        const themeParam = new URLSearchParams(location.search).get('theme');
-        setTheme(themeParam || localStorage.getItem('akashuraTheme') || 'ukiyo');
+        const shuraModeLink = document.getElementById('shura-mode-link');
+        if (shuraModeLink && location.hostname === 'localhost') {
+            shuraModeLink.href = 'http://localhost:4177/index.html';
+        }
 
         async function syncNav() {
             try {
