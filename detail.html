@@ -66,7 +66,7 @@
                 <img id="brand-image" src="logo.png" alt="Akashura Guitars" class="w-full h-auto object-contain sepia saturate-[170%] hue-rotate-[345deg] contrast-125">
             </div>
             <h1 id="brand-title" class="text-4xl md:text-5xl font-extrabold tracking-widest text-[#191713] uppercase hidden">Akashura Guitars</h1>
-            <p id="brand-slogan" class="w-full text-center text-[9px] md:text-xs text-[#b73524] font-light uppercase mt-1 tracking-[0.26em] md:tracking-[0.43em] whitespace-nowrap pl-[0.26em] md:pl-[0.43em]">打造属于演奏者的个性。</p>
+            <p id="brand-slogan" class="w-full text-center text-[9px] md:text-xs text-[#b73524] font-light uppercase mt-1 tracking-[0.26em] md:tracking-[0.43em] whitespace-nowrap pl-[0.26em] md:pl-[0.43em]">Built for Your Own Sound</p>
         </div>
     </div>
 
@@ -116,7 +116,7 @@
                 if (siteData.items.length > 0) {
                     const fields = siteData.items[0].fields;
                     if (fields.brandName) brandImage.src = 'https:' + fields.brandName.fields.file.url;
-                    if (fields.slogan) brandSlogan.textContent = fields.slogan;
+                    brandSlogan.textContent = 'Built for Your Own Sound';
                 }
             } catch (err) { console.error(err); }
         }
