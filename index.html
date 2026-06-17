@@ -170,7 +170,8 @@
             inset: 0;
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            object-position: center;
             opacity: 0.82;
             mix-blend-mode: multiply;
             transition: transform 800ms ease, opacity 800ms ease;
@@ -454,7 +455,7 @@
                             <button onclick="renderProductFamilyBySlug('electric-guitars')" class="mt-8 w-full sm:w-auto px-6 py-3 bg-[#193a5a] hover:bg-[#10273f] text-[#f8efd9] text-xs uppercase tracking-widest">查看电吉他</button>
                         </div>
                         <div class="relative min-h-[420px] lg:min-h-[560px] bg-[#ead7b3] overflow-hidden order-1 lg:order-2">
-                            <img src="assets/ukiyo-edo-guitar-duel.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="江户浮世绘双吉他视觉">
+                            <img src="assets/ukiyo-edo-guitar-duel.jpg" class="absolute inset-0 w-full h-full object-contain object-center" alt="江户浮世绘双吉他视觉">
                         </div>
                     </div>
                 </section>
