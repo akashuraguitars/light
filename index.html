@@ -1018,13 +1018,13 @@
                         </div>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
                             ${seriesItems.map(series => `
-                                <button onclick="renderSubSeries('${series.sys.id}')" class="group text-left bg-black/85 text-white border border-white/10 overflow-hidden shadow-xl">
-                                    <div class="aspect-[16/10] bg-zinc-950 overflow-hidden">
-                                        <img src="${seriesPreview(series)}" class="w-full h-full object-contain object-center bg-black group-hover:scale-105 transition duration-500" alt="${series.fields.series || '系列'}">
+                                <button onclick="renderSubSeries('${series.sys.id}')" class="group text-left bg-[#f8efd9]/95 text-[#191713] border border-[#191713]/15 overflow-hidden shadow-[5px_5px_0_rgba(25,58,90,0.12)]">
+                                    <div class="aspect-[16/10] bg-white overflow-hidden">
+                                        <img src="${seriesPreview(series)}" class="w-full h-full object-contain object-center bg-white group-hover:scale-105 transition duration-500" alt="${series.fields.series || '系列'}">
                                     </div>
-                                    <div class="p-6">
-                                        <p class="text-[10px] uppercase tracking-[0.25em] text-red-700 mb-3">${family.fields.name || '产品大类'}</p>
-                                        <h3 class="text-2xl font-black uppercase">${series.fields.series || '未命名系列'}</h3>
+                                    <div class="p-6 border-t border-[#191713]/10">
+                                        <p class="text-[10px] uppercase tracking-[0.25em] text-[#b73524] mb-3">${family.fields.name || '产品大类'}</p>
+                                        <h3 class="text-2xl font-black uppercase text-[#191713]">${series.fields.series || '未命名系列'}</h3>
                                     </div>
                                 </button>
                             `).join('') || '<p class="col-span-3 text-center uppercase">这个大类的系列规划中。</p>'}
