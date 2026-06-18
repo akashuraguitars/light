@@ -1096,7 +1096,7 @@
                 if (filtered.length === 0) { view.innerHTML = '<p class="col-span-3 text-center uppercase">目前没有产品。</p>'; return; }
                 view.innerHTML = filtered.map(g => `
                     <a href="detail.html?id=${g.sys.id}" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] hover:scale-105 transition block border border-[#191713]/15">
-                        <div class="aspect-[16/9] bg-[#efe3c8] overflow-hidden mb-4 border border-[#191713]/10">
+                        <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/10">
                             <img src="${getImageUrl(g.fields)}" class="w-full h-full object-contain object-center">
                         </div>
                         <h2 class="font-bold text-lg uppercase text-[#b73524]">${g.fields.title || '未命名琴款'}</h2>
