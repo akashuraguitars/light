@@ -523,7 +523,7 @@
                 grid.innerHTML = products.map(item => {
                     const title = item.fields.title || '未命名产品';
                     const line = title.startsWith('NEON BEATS') ? 'NEON BEATS' : 'AKSHURA';
-                    const tier = title.match(/Standard|Modern|EVO|Chao of Blade|Flagship/i)?.[0] || '已上架';
+                    const tier = title.match(/Standard|Modern|EVO|Chaos of Blade|Flagship/i)?.[0] || '已上架';
                     return `
                         <a href="detail.html?id=${item.sys.id}" class="group bg-white overflow-hidden block border border-[#191713]/15 shadow-[5px_5px_0_rgba(25,58,90,0.12)]">
                             <div class="relative aspect-[16/9] bg-white overflow-hidden">
@@ -691,8 +691,8 @@
                 },
                 {
                     title: 'AKSHURA',
-                    subtitle: 'Standard / EVO / Chao of Blade',
-                    body: '电吉他大类底下的金属系列。Standard 建立 HH 刀锋轮廓；EVO 升级 Ash 琴身与 UV 虎纹面板；Chao of Blade 进入桃花心木、AAA 枫木面板与 Duncan SH2 / RTM 的高阶配置。'
+                    subtitle: 'Standard / EVO / Chaos of Blade',
+                    body: '电吉他大类底下的金属系列。Standard 建立 HH 刀锋轮廓；EVO 升级 Ash 琴身与 UV 虎纹面板；Chaos of Blade 进入桃花心木、AAA 枫木面板与 Duncan SH2 / RTM 的高阶配置。'
                 },
             ];
 
