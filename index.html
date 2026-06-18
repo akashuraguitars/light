@@ -1058,7 +1058,7 @@
                         <h1 class="text-4xl md:text-6xl font-black uppercase leading-none">${category.fields.name || '未命名系列'}</h1>
                     </section>
                     ${filtered.map(s => `
-                        <div onclick="renderSubSeries('${s.sys.id}')" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.14)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/20">
+                        <div onclick="renderSubSeries('${s.sys.id}')" class="bg-[#e2d4b7]/90 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.16)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/25">
                             <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/15">
                                 <img src="${getImageUrl(s.fields)}" class="w-full h-full object-contain object-center">
                             </div>
@@ -1077,7 +1077,7 @@
                     return sId === seriesId;
                 });
                 view.innerHTML = filtered.map(ss => `
-                    <div onclick="renderProducts('${ss.sys.id}')" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.14)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/20">
+                    <div onclick="renderProducts('${ss.sys.id}')" class="bg-[#e2d4b7]/90 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.16)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/25">
                         <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/15">
                             <img src="${getImageUrl(ss.fields)}" class="w-full h-full object-contain object-center">
                         </div>
