@@ -1019,8 +1019,8 @@
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 md:gap-6">
                             ${seriesItems.map(series => `
                                 <button onclick="renderSubSeries('${series.sys.id}')" class="group text-left bg-[#f8efd9]/95 text-[#191713] border border-[#191713]/15 overflow-hidden shadow-[5px_5px_0_rgba(25,58,90,0.12)]">
-                                    <div class="aspect-[16/10] bg-white overflow-hidden">
-                                        <img src="${seriesPreview(series)}" class="w-full h-full object-contain object-center bg-white group-hover:scale-105 transition duration-500" alt="${series.fields.series || '系列'}">
+                                    <div class="aspect-[16/10] bg-[#efe3c8] overflow-hidden">
+                                        <img src="${seriesPreview(series)}" class="w-full h-full object-contain object-center bg-[#efe3c8] group-hover:scale-105 transition duration-500" alt="${series.fields.series || '系列'}">
                                     </div>
                                     <div class="p-6 border-t border-[#191713]/10">
                                         <p class="text-[10px] uppercase tracking-[0.25em] text-[#b73524] mb-3">${family.fields.name || '产品大类'}</p>
@@ -1057,8 +1057,8 @@
                         <h1 class="text-4xl md:text-6xl font-black uppercase leading-none">${category.fields.name || '未命名系列'}</h1>
                     </section>
                     ${filtered.map(s => `
-                        <div onclick="renderSubSeries('${s.sys.id}')" class="bg-[#e2d4b7]/90 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.16)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/25">
-                            <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/15">
+                        <div onclick="renderSubSeries('${s.sys.id}')" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/15">
+                            <div class="aspect-[16/9] bg-[#efe3c8] overflow-hidden mb-4 border border-[#191713]/10">
                                 <img src="${getImageUrl(s.fields)}" class="w-full h-full object-contain object-center">
                             </div>
                             <h2 class="text-xl font-bold uppercase text-[#b73524]">${s.fields.series || '未命名系列'}</h2>
@@ -1076,8 +1076,8 @@
                     return sId === seriesId;
                 });
                 view.innerHTML = filtered.map(ss => `
-                    <div onclick="renderProducts('${ss.sys.id}')" class="bg-[#e2d4b7]/90 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.16)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/25">
-                        <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/15">
+                    <div onclick="renderProducts('${ss.sys.id}')" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/15">
+                        <div class="aspect-[16/9] bg-[#efe3c8] overflow-hidden mb-4 border border-[#191713]/10">
                             <img src="${getImageUrl(ss.fields)}" class="w-full h-full object-contain object-center">
                         </div>
                         <h2 class="text-xl font-bold uppercase text-[#b73524]">${ss.fields.name || ss.fields.subseriesName || '未命名子系列'}</h2>
@@ -1095,8 +1095,8 @@
                 });
                 if (filtered.length === 0) { view.innerHTML = '<p class="col-span-3 text-center uppercase">目前没有产品。</p>'; return; }
                 view.innerHTML = filtered.map(g => `
-                    <a href="detail.html?id=${g.sys.id}" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.14)] hover:scale-105 transition block border border-[#191713]/20">
-                        <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/15">
+                    <a href="detail.html?id=${g.sys.id}" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] hover:scale-105 transition block border border-[#191713]/15">
+                        <div class="aspect-[16/9] bg-[#efe3c8] overflow-hidden mb-4 border border-[#191713]/10">
                             <img src="${getImageUrl(g.fields)}" class="w-full h-full object-contain object-center">
                         </div>
                         <h2 class="font-bold text-lg uppercase text-[#b73524]">${g.fields.title || '未命名琴款'}</h2>
