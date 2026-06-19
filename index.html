@@ -1110,16 +1110,16 @@
                 const text = (node.content || []).map(child => {
                     if (child.nodeType === 'hyperlink') {
                         const label = child.content?.map(c => c.value || '').join('') || child.data?.uri || '';
-                        return `<a href="${child.data?.uri || '#'}" class="text-red-400 underline underline-offset-4">${label}</a>`;
+                        return `<a href="${child.data?.uri || '#'}" class="text-[#b73524] underline underline-offset-4">${label}</a>`;
                     }
                     return child.value || '';
                 }).join('');
 
-                if (node.nodeType === 'heading-2') return `<h2 class="text-2xl md:text-4xl font-black uppercase mt-10 mb-4">${text}</h2>`;
-                if (node.nodeType === 'heading-3') return `<h3 class="text-xl md:text-2xl font-black uppercase mt-8 mb-3 text-red-400">${text}</h3>`;
-                if (node.nodeType === 'paragraph') return text ? `<p class="mb-5 text-base md:text-lg font-light leading-relaxed text-gray-200">${text}</p>` : '';
+                if (node.nodeType === 'heading-2') return `<h2 class="text-2xl md:text-4xl font-black uppercase mt-10 mb-4 text-[#191713]">${text}</h2>`;
+                if (node.nodeType === 'heading-3') return `<h3 class="text-xl md:text-2xl font-black uppercase mt-8 mb-3 text-[#b73524]">${text}</h3>`;
+                if (node.nodeType === 'paragraph') return text ? `<p class="mb-5 text-base md:text-lg font-light leading-relaxed text-[#2b2720]">${text}</p>` : '';
                 if (node.nodeType === 'unordered-list') {
-                    return `<ul class="mb-6 space-y-2 text-gray-200">${(node.content || []).map(item => `<li class="pl-4 border-l border-red-700">${item.content?.flatMap(c => c.content || []).map(c => c.value || '').join('') || ''}</li>`).join('')}</ul>`;
+                    return `<ul class="mb-6 space-y-2 text-[#2b2720]">${(node.content || []).map(item => `<li class="pl-4 border-l border-[#b73524]">${item.content?.flatMap(c => c.content || []).map(c => c.value || '').join('') || ''}</li>`).join('')}</ul>`;
                 }
                 if (node.nodeType === 'embedded-asset-block') {
                     const url = node.data?.target?.fields?.file?.url;
