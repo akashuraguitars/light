@@ -164,6 +164,10 @@
         const brandImage = document.getElementById('brand-image');
         const brandSlogan = document.getElementById('brand-slogan');
 
+        const localProductImages = {
+            'guitar-akshura-chaos-of-blade-official-08': 'assets/formal-color-logo/guitars/chaos-of-blade/akashura-chaos-of-blade-official-08.jpg'
+        };
+
         function toggleProducts() { dropdown.classList.toggle('hidden'); storyDropdown.classList.add('hidden'); }
         function toggleStory() { storyDropdown.classList.toggle('hidden'); dropdown.classList.add('hidden'); }
         const shuraModeLink = document.getElementById('shura-mode-link');
@@ -209,7 +213,7 @@
             try {
                 const entry = await client.getEntry(productId);
                 const fields = entry.fields;
-                let imageHtml = fields.image?.map(img => `<img src="https:${img.fields.file.url}" class="w-full h-auto max-h-[600px] object-contain mb-6 bg-[#ead7b3] border border-[#191713]/15">`).join('') || '';
+                let imageHtml = fields.image?.map(img => `<img src="${localProductImages[productId] || ('https:' + img.fields.file.url)}" class="block w-full aspect-[16/9] object-contain mb-6 bg-white border border-[#191713]/15">`).join('') || '';
 
                 document.getElementById('detail-view').innerHTML = `
                     ${imageHtml}
