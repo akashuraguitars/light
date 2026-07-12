@@ -6,9 +6,9 @@
     <title>Akashura Guitars | 浮世绘电吉他与现代舞台声音</title>
     <meta name="description" content="Akashura Guitars 以浮世绘视觉、现代机能与鲜明角色感打造电吉他。探索 AKSHURA、NEON BEATS 与 Chaos of Blade 系列。">
     <meta name="keywords" content="Akashura Guitars, 电吉他, 金属琴, 浮世绘电吉他, AKSHURA, NEON BEATS, Chaos of Blade">
-    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=4">
-    <link rel="shortcut icon" href="favicon.ico?v=4">
-    <link rel="apple-touch-icon" href="assets/favicon-192.png?v=4">
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-shura.png?v=5">
+    <link rel="shortcut icon" type="image/png" href="assets/favicon-shura.png?v=5">
+    <link rel="apple-touch-icon" href="assets/favicon-shura.png?v=5">
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/contentful@latest/dist/contentful.browser.min.js"></script>
     <style>
@@ -392,10 +392,18 @@
 
         function toggleProducts() { dropdown.classList.toggle('hidden'); storyDropdown.classList.add('hidden'); }
         function toggleStory() { storyDropdown.classList.toggle('hidden'); dropdown.classList.add('hidden'); }
-        const shuraModeLink = document.getElementById('shura-mode-link');
-        if (shuraModeLink && location.hostname === 'localhost') {
-            shuraModeLink.href = 'http://localhost:4177/index.html';
+        function setRoute(params = {}) {
+            const url = new URL(window.location.href);
+            url.search = '';
+            Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
+            history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
         }
+        function preserveModeLocation(baseUrl) {
+            const page = location.pathname.toLowerCase().endsWith('/detail.html') ? 'detail.html' : 'index.html';
+            return `${baseUrl}${page}${location.search}${location.hash}`;
+        }
+        const shuraModeLink = document.getElementById('shura-mode-link');
+        if (shuraModeLink) shuraModeLink.href = preserveModeLocation(location.hostname === 'localhost' ? 'http://localhost:4177/' : 'https://akashuraguitars.github.io/test/');
 
         const localProductImages = {
             'guitar-akshura-chaos-of-blade-official-08': 'assets/formal-color-logo/guitars/chaos-of-blade/akashura-chaos-of-blade-official-08.jpg'
@@ -415,6 +423,7 @@
         }
 
         async function renderHome() {
+            setRoute();
             hero.classList.remove('hidden');
             totem.classList.add('hidden');
             symbolWall.classList.add('hidden');
@@ -982,6 +991,7 @@
         }
 
         async function renderProductFamilyBySlug(slug) {
+            setRoute({ familySlug: slug });
             try {
                 const data = await client.getEntries({ content_type: 'productFamily', 'fields.slug': slug, limit: 1 });
                 if (data.items.length) renderProductFamily(data.items[0].sys.id);
@@ -991,6 +1001,7 @@
         }
 
         async function renderProductFamily(familyId) {
+            setRoute({ family: familyId });
             hero.classList.add('hidden');
             totem.classList.add('hidden');
             symbolWall.classList.add('hidden');
@@ -1065,6 +1076,7 @@
         }
 
         async function renderSeries(catId) {
+            setRoute({ cat: catId });
             hero.classList.add('hidden');
             totem.classList.add('hidden');
             symbolWall.classList.add('hidden');
@@ -1099,6 +1111,7 @@
         }
 
         async function renderSubSeries(seriesId) {
+            setRoute({ series: seriesId });
             try {
                 const data = await client.getEntries({ content_type: 'subseries' });
                 const filtered = data.items.filter(ss => {
@@ -1117,6 +1130,7 @@
         }
 
         async function renderProducts(subSeriesId) {
+            setRoute({ subseries: subSeriesId });
             try {
                 const data = await client.getEntries({ content_type: 'guitar' });
                 const filtered = data.items.filter(g => {
@@ -1163,6 +1177,7 @@
         }
 
         async function renderStoryHub() {
+            setRoute({ story: 'hub' });
             hero.classList.add('hidden');
             totem.classList.add('hidden');
             symbolWall.classList.add('hidden');
@@ -1208,6 +1223,7 @@
         }
 
         async function renderStory(storyId) {
+            setRoute({ story: storyId });
             hero.classList.add('hidden');
             totem.classList.add('hidden');
             symbolWall.classList.add('hidden');
@@ -1236,6 +1252,7 @@
         }
 
         async function renderNews() {
+            setRoute({ news: '1' });
             hero.classList.add('hidden');
             totem.classList.add('hidden');
             symbolWall.classList.add('hidden');
@@ -1289,17 +1306,26 @@
         const storyParam = urlParams.get('story');
         const newsParam = urlParams.get('news');
         const familyParam = urlParams.get('family');
+        const familySlugParam = urlParams.get('familySlug');
         const catParam = urlParams.get('cat');
+        const seriesParam = urlParams.get('series');
+        const subseriesParam = urlParams.get('subseries');
         if (storyParam === 'hub') {
             renderStoryHub();
         } else if (storyParam) {
             renderStory(storyParam);
         } else if (newsParam) {
             renderNews();
+        } else if (familySlugParam) {
+            renderProductFamilyBySlug(familySlugParam);
         } else if (familyParam) {
             renderProductFamily(familyParam);
         } else if (catParam) {
             renderSeries(catParam);
+        } else if (seriesParam) {
+            renderSubSeries(seriesParam);
+        } else if (subseriesParam) {
+            renderProducts(subseriesParam);
         } else {
             renderHome();
         }
