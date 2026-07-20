@@ -109,8 +109,19 @@
         }
         async function login() {
             const password = document.getElementById('password').value;
-            sessionStorage.setItem('akashura_admin_password', password);
-            await load();
+            status('验证中…');
+            try {
+                const res = await fetch(`${API}/api/admin/verify`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                if (!res.ok) throw new Error(res.status === 401 ? '密码错误' : `验证失败 ${res.status}`);
+                sessionStorage.setItem('akashura_admin_password', password);
+                await load();
+            } catch (error) {
+                status(`${error.message}。若从本机 file:// 开启，请先重新发布 Google 后台 API。`);
+            }
         }
         async function load() {
             status('读取中…');
