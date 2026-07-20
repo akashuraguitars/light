@@ -1,105 +1,520 @@
-<!doctype html>
-<html lang="zh-Hans">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>AKASHURA | 主站管理后台</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AKASHURA GUITARS - CMS 後台管理系統</title>
+    <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=6">
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root { --paper: #f4ead6; --ink: #191713; --indigo: #193a5a; --red: #b73524; }
-        body { background: var(--paper); color: var(--ink); }
-        button, input, textarea { border-radius: 0; }
+        :root {
+            --paper: #f4ead6;
+            --paper-deep: #ead7b3;
+            --ink: #191713;
+            --indigo: #193a5a;
+            --vermilion: #b73524;
+            --gold: #ad7c35;
+        }
+        body {
+            color: var(--ink);
+            background-color: #faf6eb;
+            background-image: 
+                linear-gradient(rgba(25, 58, 90, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(25, 58, 90, 0.02) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
     </style>
 </head>
-<body class="min-h-screen">
-    <header class="bg-[#191713] text-[#f4ead6] border-b-4 border-[#b73524] px-5 py-5 md:px-10 flex flex-wrap items-center justify-between gap-4">
-        <div>
-            <p class="text-[10px] uppercase tracking-[0.35em] text-[#d97864]">AKASHURA Guitars</p>
-            <h1 class="text-xl md:text-2xl font-black">主站管理后台</h1>
+<body class="min-h-screen flex flex-col font-sans">
+
+    <!-- Security Lock Overlay -->
+    <div id="lock-overlay" class="fixed inset-0 bg-[#070403] z-[9999] flex flex-col items-center justify-center p-4">
+        <div class="max-w-md w-full bg-[#191713] border-t-4 border-[#b73524] shadow-2xl p-8 text-center paper-panel" style="box-shadow: 12px 12px 0 rgba(183, 53, 36, 0.15);">
+            <div class="seal mb-6" aria-label="赤紅修羅" style="cursor: default;"><span>修</span><span>赤</span><span>羅</span><span>紅</span></div>
+            <h2 class="text-2xl font-black uppercase tracking-widest text-[#f4ead6] mb-2">CMS 系統安全鎖</h2>
+            <p class="text-xs text-gray-400 uppercase tracking-widest mb-6">AKASHURA GUITARS Backend Engine</p>
+            
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-left text-xs font-bold uppercase text-gray-300 mb-2 tracking-wider">請輸入管理密碼</label>
+                    <input type="password" id="login-password" class="w-full bg-black/50 border border-gray-700 text-[#f4ead6] p-3 text-sm text-center tracking-widest font-mono rounded-none focus:border-[#b73524] focus:outline-none" placeholder="••••••••" required>
+                </div>
+                <div id="login-error" class="text-xs text-[#b73524] font-bold hidden mb-2">密碼錯誤，請再試一次！</div>
+                <button type="submit" class="w-full py-3 bg-[#b73524] hover:bg-red-800 text-white font-bold uppercase text-xs tracking-widest transition rounded-none">
+                    解鎖後台系統
+                </button>
+            </form>
+            <p class="text-[10px] text-gray-500 mt-6 tracking-wide">預設密碼為 <code class="font-mono bg-black/30 px-1 py-0.5 text-gray-400">akashura888</code> (可透過環境變數自訂)</p>
         </div>
-        <div class="flex gap-2">
-            <a href="index.html" class="border border-[#f4ead6]/40 px-4 py-2 text-xs hover:border-white">回到主站</a>
-            <a href="https://akashuraguitars.ai.studio/admin.html" target="_blank" rel="noopener" class="bg-[#b73524] px-4 py-2 text-xs hover:bg-[#92291c]">完整内容管理</a>
+    </div>
+
+    <!-- Header -->
+    <header class="bg-[#191713] text-[#f4ead6] py-5 px-6 md:px-12 flex flex-col md:flex-row justify-between items-center border-b-4 border-[#b73524]">
+        <div class="flex items-center gap-4 mb-4 md:mb-0">
+            <img src="assets/favicon-shura.png" alt="AKASHURA logo" class="h-10 w-auto">
+            <div>
+                <h1 class="text-xl md:text-2xl font-black uppercase tracking-widest text-[#b73524]">AKASHURA GUITARS</h1>
+                <p class="text-xs uppercase tracking-wider text-gray-400">CMS Cloud Backend Dashboard</p>
+            </div>
+        </div>
+        <div class="flex items-center gap-3">
+            <a href="index.html" class="px-5 py-2 border border-gray-500 hover:border-[#b73524] text-xs font-bold uppercase tracking-wider transition bg-transparent text-[#f4ead6]">回到前台網站</a>
         </div>
     </header>
 
-    <main class="max-w-6xl mx-auto px-5 py-8 md:px-10">
-        <section class="bg-[#f8efd9] border border-[#191713]/15 p-5 md:p-8 shadow-[6px_6px_0_rgba(25,58,90,0.12)]">
-            <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 border-b border-[#191713]/20 pb-5 mb-6">
-                <div>
-                    <p class="text-[10px] uppercase tracking-[0.35em] text-[#b73524]">Homepage Control</p>
-                    <h2 class="text-2xl md:text-4xl font-black">首页区块管理</h2>
-                    <p class="mt-2 text-sm text-[#3c3328]">调整顺序后，主站首页会按照新的排列显示。</p>
-                </div>
-                <span id="status" class="text-xs text-[#193a5a]"></span>
-            </div>
+    <!-- Navigation / Tabs -->
+    <div class="bg-[#ead7b3]/40 border-b border-gray-300">
+        <div class="max-w-7xl mx-auto px-4 md:px-8 flex flex-wrap gap-2 py-3">
+            <button onclick="switchTab('blocks')" id="tab-blocks" class="tab-btn px-4 py-2 text-sm font-bold bg-[#b73524] text-white transition rounded-none shadow">
+                区塊管理 (Landing Blocks)
+            </button>
+            <button onclick="switchTab('products')" id="tab-products" class="tab-btn px-4 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 transition rounded-none">
+                产品与系列管理
+            </button>
+            <button onclick="switchTab('stories')" id="tab-stories" class="tab-btn px-4 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 transition rounded-none">
+                文章与快讯
+            </button>
+            <button onclick="switchTab('contact')" id="tab-contact" class="tab-btn px-4 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 transition rounded-none">
+                聯絡方式與 QR Code
+            </button>
+            <button onclick="switchTab('media')" id="tab-media" class="tab-btn px-4 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 transition rounded-none">
+                媒体库与批量上传
+            </button>
+        </div>
+    </div>
 
-            <div id="login-panel" class="max-w-md border border-[#191713]/15 bg-white p-5">
-                <label for="password" class="block text-xs font-bold mb-2">管理密码</label>
-                <div class="flex gap-2">
-                    <input id="password" type="password" class="min-w-0 flex-1 border border-[#191713]/25 px-3 py-2" autocomplete="current-password">
-                    <button onclick="login()" class="bg-[#193a5a] text-white px-5 py-2 text-xs font-bold">登入</button>
+    <!-- Main Content Grid -->
+    <main class="flex-grow max-w-7xl w-full mx-auto p-4 md:p-8">
+        
+        <!-- =================== BLOCKS TAB =================== -->
+        <section id="content-blocks" class="tab-content block">
+            <div class="bg-white p-6 md:p-8 border border-gray-200 shadow-md mb-8">
+                <h2 class="text-2xl font-black mb-6 pb-2 border-b-2 border-[#b73524] uppercase">Landing Page 首页区塊文字管理</h2>
+                <div class="mb-8 bg-[#f8efd9] p-5 border-l-4 border-[#193a5a]">
+                    <div class="flex flex-col md:flex-row md:items-end justify-between gap-2 mb-4">
+                        <div>
+                            <p class="text-xs uppercase tracking-[0.28em] text-[#b73524]">Homepage Layout</p>
+                            <h3 class="text-lg font-bold text-[#193a5a]">首頁區塊上下排列</h3>
+                        </div>
+                        <p class="text-xs text-gray-600">按 ↑ ↓ 調整主站首頁顯示順序</p>
+                    </div>
+                    <div id="home-order-list" class="grid grid-cols-1 md:grid-cols-5 gap-2"></div>
                 </div>
-                <p class="mt-3 text-xs text-[#6e6252]">密码只保存在当前浏览器分页，不写入网页。</p>
-            </div>
+                
+                <form id="blocks-form" onsubmit="saveBlocks(event)" class="space-y-8">
+                    <!-- Hero Section -->
+                    <div class="bg-gray-50 p-5 border-l-4 border-[#193a5a]">
+                        <h3 class="text-lg font-bold text-[#193a5a] mb-4 uppercase">Hero 顶部主标区塊</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-700 mb-1">主标题 (支援換行)</label>
+                                <textarea id="hero-title" class="w-full border border-gray-300 p-2 font-mono text-sm bg-white" rows="2"></textarea>
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-700 mb-1">副标题 (Slogan)</label>
+                                <input type="text" id="hero-slogan" class="w-full border border-gray-300 p-2 text-sm bg-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-700 mb-1">描述內文</label>
+                            <textarea id="hero-desc" class="w-full border border-gray-300 p-2 text-sm bg-white" rows="3"></textarea>
+                        </div>
+                    </div>
 
-            <div id="editor" class="hidden">
-                <div id="order-list" class="grid grid-cols-1 md:grid-cols-5 gap-2 mb-8"></div>
-                <div class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                    <label class="block text-sm font-bold">Hero 标题
-                        <textarea id="hero-title" rows="3" class="mt-2 w-full border border-[#191713]/20 bg-white p-3 font-normal"></textarea>
-                    </label>
-                    <label class="block text-sm font-bold">Hero Slogan
-                        <input id="hero-slogan" class="mt-2 w-full border border-[#191713]/20 bg-white p-3 font-normal">
-                    </label>
-                    <label class="block text-sm font-bold lg:col-span-2">Hero 描述
-                        <textarea id="hero-desc" rows="4" class="mt-2 w-full border border-[#191713]/20 bg-white p-3 font-normal"></textarea>
-                    </label>
-                    <label class="block text-sm font-bold">精神区块标题
-                        <input id="custom-title" class="mt-2 w-full border border-[#191713]/20 bg-white p-3 font-normal">
-                    </label>
-                    <label class="block text-sm font-bold">精神区块副标题
-                        <input id="custom-subtitle" class="mt-2 w-full border border-[#191713]/20 bg-white p-3 font-normal">
-                    </label>
-                    <label class="block text-sm font-bold lg:col-span-2">精神区块内文
-                        <textarea id="custom-desc" rows="4" class="mt-2 w-full border border-[#191713]/20 bg-white p-3 font-normal"></textarea>
-                    </label>
+                    <!-- Custom Shop Section -->
+                    <div class="bg-gray-50 p-5 border-l-4 border-[#b73524]">
+                        <h3 class="text-lg font-bold text-[#b73524] mb-4 uppercase">Custom Shop 精神图腾区塊</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-700 mb-1">区塊主標</label>
+                                <input type="text" id="custom-title" class="w-full border border-gray-300 p-2 text-sm bg-white">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-gray-700 mb-1">副標題</label>
+                                <input type="text" id="custom-subtitle" class="w-full border border-gray-300 p-2 text-sm bg-white">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold uppercase text-gray-700 mb-1">核心闡述 (支援換行)</label>
+                            <textarea id="custom-desc" class="w-full border border-gray-300 p-2 text-sm bg-white" rows="4"></textarea>
+                        </div>
+                    </div>
+
+                    <div class="flex justify-end">
+                        <button type="submit" class="px-6 py-3 bg-[#b73524] text-white font-bold uppercase text-sm tracking-wider hover:bg-red-800 transition shadow">
+                            儲存首頁區塊設定
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </section>
+
+        <!-- =================== PRODUCTS TAB =================== -->
+        <section id="content-products" class="tab-content hidden">
+            <!-- Selector of product level -->
+            <div class="grid grid-cols-1 lg:grid-cols-[250px_1fr] gap-6">
+                <!-- Level panel -->
+                <div class="bg-white p-4 border border-gray-200 shadow-sm space-y-2">
+                    <h3 class="text-xs font-bold uppercase text-gray-500 mb-3 tracking-wider">管理資料層級</h3>
+                    <button onclick="switchProductLevel('guitar')" id="btn-lvl-guitar" class="lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-[#b73524] text-white shadow">
+                        🎸 琴款產品 (Guitar)
+                    </button>
+                    <button onclick="switchProductLevel('subseries')" id="btn-lvl-subseries" class="lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-gray-50 hover:bg-gray-100 text-gray-700">
+                        📁 子系列 (Subseries)
+                    </button>
+                    <button onclick="switchProductLevel('series')" id="btn-lvl-series" class="lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-gray-50 hover:bg-gray-100 text-gray-700">
+                        🏷️ 大系列 (Series)
+                    </button>
+                    <button onclick="switchProductLevel('category')" id="btn-lvl-category" class="lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-gray-50 hover:bg-gray-100 text-gray-700">
+                        🗂️ 分類 (Category)
+                    </button>
+                    <button onclick="switchProductLevel('productFamily')" id="btn-lvl-productFamily" class="lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-gray-50 hover:bg-gray-100 text-gray-700">
+                        🌐 大類 (ProductFamily)
+                    </button>
                 </div>
-                <div class="mt-6 flex justify-end">
-                    <button onclick="save()" class="bg-[#b73524] text-white px-6 py-3 text-xs font-bold hover:bg-[#92291c]">保存并发布首页设定</button>
+
+                <!-- Entity Table -->
+                <div class="bg-white p-6 border border-gray-200 shadow-md">
+                    <div class="flex justify-between items-center mb-6 pb-2 border-b border-gray-200">
+                        <h2 id="products-list-title" class="text-xl font-black uppercase text-[#191713]">產品琴款清單</h2>
+                        <button onclick="openCreateModal()" class="px-4 py-2 bg-[#193a5a] text-[#f4ead6] hover:bg-[#10273f] text-xs font-bold uppercase tracking-wider transition">
+                            ＋ 新增資料
+                        </button>
+                    </div>
+
+                    <div class="mb-4 flex flex-col sm:flex-row sm:items-center gap-2">
+                        <div class="relative flex-grow">
+                            <input id="product-search" type="search"
+                                oninput="updateProductSearch(this.value)"
+                                placeholder="搜尋產品名稱、系列、子系列或資料 ID…"
+                                class="w-full border border-gray-300 bg-gray-50 px-4 py-2 pr-10 text-sm focus:border-[#193a5a] focus:outline-none">
+                            <button type="button" onclick="clearProductSearch()"
+                                class="absolute right-2 top-1/2 -translate-y-1/2 px-2 text-gray-400 hover:text-[#b73524]"
+                                aria-label="清除搜尋">×</button>
+                        </div>
+                        <span id="product-search-count" class="text-xs font-bold text-gray-500 whitespace-nowrap"></span>
+                    </div>
+
+                    <!-- Items Container -->
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200 text-left text-sm">
+                            <thead class="bg-gray-50 font-bold text-gray-700 text-xs uppercase">
+                                <tr id="table-headers">
+                                    <!-- Dynamic headers -->
+                                </tr>
+                            </thead>
+                            <tbody id="table-rows" class="divide-y divide-gray-200 bg-white text-gray-900">
+                                <!-- Dynamic rows -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </section>
+
+        <!-- =================== STORIES TAB =================== -->
+        <section id="content-stories" class="tab-content hidden">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                <!-- Brand Stories -->
+                <div class="bg-white p-6 border border-gray-200 shadow-md">
+                    <div class="flex justify-between items-center mb-6 pb-2 border-b border-gray-200">
+                        <h2 class="text-lg font-black uppercase text-[#b73524]">品牌故事 (Stories)</h2>
+                        <button onclick="openStoryForm()" class="px-3 py-1 bg-[#193a5a] text-white text-xs font-bold uppercase">新增故事</button>
+                    </div>
+                    <div id="story-list" class="space-y-3">
+                        <!-- Dynamic stories -->
+                    </div>
+                </div>
+
+                <!-- News快訊 -->
+                <div class="bg-white p-6 border border-gray-200 shadow-md">
+                    <div class="flex justify-between items-center mb-6 pb-2 border-b border-gray-200">
+                        <h2 class="text-lg font-black uppercase text-[#193a5a]">最新消息與快訊 (News)</h2>
+                        <button onclick="openNewsForm()" class="px-3 py-1 bg-[#193a5a] text-white text-xs font-bold uppercase">新增快訊</button>
+                    </div>
+                    <div id="news-list" class="space-y-3">
+                        <!-- Dynamic news -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- =================== CONTACT TAB =================== -->
+        <section id="content-contact" class="tab-content hidden">
+            <div class="bg-white p-6 md:p-8 border border-gray-200 shadow-md">
+                <div class="flex flex-col md:flex-row md:items-end justify-between gap-3 mb-6 pb-4 border-b-2 border-[#193a5a]">
+                    <div>
+                        <p class="text-xs uppercase tracking-[0.3em] text-[#b73524] mb-2">Front / Back Contact Settings</p>
+                        <h2 class="text-2xl font-black uppercase text-[#191713]">聯絡方式與 QR Code</h2>
+                    </div>
+                    <label class="inline-flex items-center gap-2 text-sm font-bold text-gray-700">
+                        <input id="contact-enabled" type="checkbox" checked class="accent-[#b73524]"> 前台顯示 Contact
+                    </label>
+                </div>
+
+                <form onsubmit="saveContact(event)" class="space-y-6">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <label class="text-sm font-bold text-gray-700">區塊標題
+                            <input id="contact-heading" class="mt-1 w-full border p-3 font-normal" value="CONTACT">
+                        </label>
+                        <label class="text-sm font-bold text-gray-700">Email
+                            <input id="contact-email" type="email" class="mt-1 w-full border p-3 font-normal" placeholder="service@example.com">
+                        </label>
+                        <label class="text-sm font-bold text-gray-700">電話
+                            <input id="contact-phone" class="mt-1 w-full border p-3 font-normal" placeholder="+886 ...">
+                        </label>
+                        <label class="text-sm font-bold text-gray-700">LINE／WeChat ID
+                            <input id="contact-line" class="mt-1 w-full border p-3 font-normal" placeholder="帳號或 ID">
+                        </label>
+                        <label class="text-sm font-bold text-gray-700">Instagram 網址
+                            <input id="contact-instagram" type="url" class="mt-1 w-full border p-3 font-normal" placeholder="https://instagram.com/...">
+                        </label>
+                        <label class="text-sm font-bold text-gray-700">Facebook 網址
+                            <input id="contact-facebook" type="url" class="mt-1 w-full border p-3 font-normal" placeholder="https://facebook.com/...">
+                        </label>
+                    </div>
+                    <label class="block text-sm font-bold text-gray-700">聯絡說明
+                        <textarea id="contact-description" rows="4" class="mt-1 w-full border p-3 font-normal" placeholder="服務時間、合作方式或回覆時間說明"></textarea>
+                    </label>
+                    <label class="block text-sm font-bold text-gray-700">地址
+                        <textarea id="contact-address" rows="2" class="mt-1 w-full border p-3 font-normal"></textarea>
+                    </label>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-[1fr_280px] gap-6 border-t pt-6">
+                        <div class="space-y-4">
+                            <label class="block text-sm font-bold text-gray-700">QR Code 圖片
+                                <select id="contact-qr-asset" onchange="updateContactQrPreview()" class="mt-1 w-full border p-3 font-normal">
+                                    <option value="">-- 尚未選擇 --</option>
+                                </select>
+                            </label>
+                            <label class="inline-flex cursor-pointer items-center gap-2 px-4 py-3 bg-[#193a5a] text-white text-xs font-bold uppercase tracking-wider hover:bg-[#10273f]">
+                                上傳新的 QR Code
+                                <input id="contact-qr-upload" type="file" accept="image/png,image/jpeg,image/webp" class="hidden" onchange="uploadContactQr(event)">
+                            </label>
+                            <label class="block text-sm font-bold text-gray-700">QR Code 說明
+                                <textarea id="contact-qr-description" rows="3" class="mt-1 w-full border p-3 font-normal" placeholder="例如：掃描加入官方 LINE，請在訊息中留下姓名與需求。"></textarea>
+                            </label>
+                            <p id="contact-status" class="text-sm text-gray-500"></p>
+                        </div>
+                        <div class="bg-[#f8efd9] border border-[#191713]/15 p-4 flex items-center justify-center min-h-[280px]">
+                            <img id="contact-qr-preview" alt="QR Code 預覽" class="hidden max-w-full max-h-64 object-contain bg-white p-3 shadow">
+                            <p id="contact-qr-empty" class="text-xs uppercase tracking-wider text-gray-400">QR Code Preview</p>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="px-6 py-3 bg-[#b73524] text-white font-bold uppercase text-sm tracking-wider hover:bg-red-800">
+                        儲存並發布聯絡資訊
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <!-- =================== MEDIA TAB =================== -->
+        <section id="content-media" class="tab-content hidden">
+            <div class="bg-white p-6 md:p-8 border border-gray-200 shadow-md">
+                <h2 class="text-2xl font-black mb-6 pb-2 border-b-2 border-[#b73524] uppercase">媒體庫與批量上傳</h2>
+                
+                <!-- Upload Dropzone -->
+                <div id="dropzone" class="border-2 border-dashed border-gray-300 hover:border-[#b73524] rounded-lg p-10 text-center cursor-pointer bg-gray-50 hover:bg-red-50/10 transition mb-8">
+                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p class="text-sm font-bold text-gray-700">拖曳圖片到此處，或是點擊選擇檔案進行批量上傳</p>
+                    <p class="text-xs text-gray-400 mt-1">支援 JPG, PNG, WEBP, SVG</p>
+                    <input type="file" id="file-input" multiple class="hidden" accept="image/*" onchange="handleFileSelect(event)">
+                </div>
+
+                <!-- Assets Gallery -->
+                <div>
+                    <h3 class="text-sm font-bold uppercase text-gray-600 mb-4 tracking-wider">雲端媒體庫</h3>
+                    <div id="assets-grid" class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
+                        <!-- Dynamic assets -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
-    <script>
-        const API = 'https://akashuraguitars.ai.studio';
-        const labels = { families: '产品分类', duel: '浮世绘双琴', yasha: '夜叉主视觉', featured: '推荐产品', story: '品牌故事与新闻' };
-        let order = Object.keys(labels);
-        let db = { blocks: {} };
-        const auth = () => ({ 'X-Admin-Password': sessionStorage.getItem('akashura_admin_password') || '' });
-        const status = message => document.getElementById('status').textContent = message;
+    <!-- FOOTER -->
+    <footer class="bg-[#191713] text-gray-500 text-xs py-6 text-center border-t border-gray-800">
+        <p>© 2026 AKASHURA GUITARS. All rights reserved. Self-Hosted CMS Cloud Engine.</p>
+    </footer>
 
-        function renderOrder() {
-            document.getElementById('order-list').innerHTML = order.map((id, index) => `
-                <div class="bg-white border border-[#193a5a]/20 p-3 flex items-center justify-between gap-2">
-                    <span class="text-xs font-bold">${index + 1}. ${labels[id] || id}</span>
-                    <span class="flex gap-1">
-                        <button onclick="move(${index}, -1)" class="w-7 h-7 border border-gray-300 disabled:opacity-30" ${index === 0 ? 'disabled' : ''}>↑</button>
-                        <button onclick="move(${index}, 1)" class="w-7 h-7 border border-gray-300 disabled:opacity-30" ${index === order.length - 1 ? 'disabled' : ''}>↓</button>
-                    </span>
-                </div>`).join('');
+    <!-- =================== MODAL: CRUD FORM =================== -->
+    <div id="crud-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-white max-w-2xl w-full border-t-4 border-[#b73524] shadow-2xl p-6 md:p-8 flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                <h3 id="modal-title" class="text-lg font-black uppercase">編輯產品</h3>
+                <button onclick="closeCrudModal()" class="text-gray-500 hover:text-black font-bold text-xl">&times;</button>
+            </div>
+            
+            <form id="crud-form" onsubmit="saveCrudItem(event)" class="space-y-4 py-4 flex-grow overflow-y-auto pr-1">
+                <input type="hidden" id="item-id">
+                <div id="form-fields" class="space-y-4">
+                    <!-- Dynamic fields -->
+                </div>
+                
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="closeCrudModal()" class="px-4 py-2 border border-gray-300 text-xs font-bold uppercase transition bg-white text-gray-700 hover:bg-gray-100">取消</button>
+                    <button type="submit" class="px-6 py-2 bg-[#b73524] text-white text-xs font-bold uppercase tracking-wider hover:bg-red-800 transition">確認儲存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =================== MODAL: STORY / NEWS FORM =================== -->
+    <div id="story-modal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center hidden p-4 overflow-y-auto">
+        <div class="bg-white max-w-4xl w-full border-t-4 border-[#193a5a] shadow-2xl p-6 md:p-8 flex flex-col max-h-[90vh]">
+            <div class="flex justify-between items-center pb-4 border-b border-gray-200">
+                <h3 id="story-modal-title" class="text-lg font-black uppercase">編輯文章</h3>
+                <button onclick="closeStoryModal()" class="text-gray-500 hover:text-black font-bold text-xl">&times;</button>
+            </div>
+            
+            <form id="story-modal-form" onsubmit="saveStoryOrNews(event)" class="space-y-4 py-4 flex-grow overflow-y-auto pr-1">
+                <input type="hidden" id="story-item-id">
+                <input type="hidden" id="story-content-type">
+                
+                <div id="story-form-fields" class="space-y-4">
+                    <!-- Filled dynamically -->
+                </div>
+                
+                <div class="flex justify-end gap-3 pt-4 border-t border-gray-200">
+                    <button type="button" onclick="closeStoryModal()" class="px-4 py-2 border border-gray-300 text-xs font-bold uppercase">取消</button>
+                    <button type="submit" class="px-6 py-2 bg-[#193a5a] text-white text-xs font-bold uppercase tracking-wider hover:bg-black transition">確認儲存</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- =================== CORE JAVASCRIPT CMS ENGINE =================== -->
+    <script>
+        // The static GitHub admin uses the secured Google test API as its backend.
+        const API_ORIGIN = 'https://akashuraguitars.ai.studio';
+        const nativeFetch = window.fetch.bind(window);
+        window.fetch = (input, init) => {
+            const url = typeof input === 'string' && input.startsWith('/api')
+                ? `${API_ORIGIN}${input}`
+                : input;
+            return nativeFetch(url, init);
+        };
+        let db = { items: [], assets: [], blocks: {} };
+        let activeTab = 'blocks';
+        let activeProductLevel = 'guitar'; // guitar, subseries, series, category, productFamily
+        let productSearchQuery = '';
+        const homeOrderLabels = {
+            families: '產品分類',
+            duel: '浮世繪雙琴',
+            yasha: '夜叉主視覺',
+            featured: '推薦產品',
+            story: '品牌故事與新聞'
+        };
+        let homeOrder = Object.keys(homeOrderLabels);
+
+        function fieldValue(value) {
+            if (value == null) return '';
+            if (typeof value !== 'object' || Array.isArray(value) || value.sys) return value;
+            if (Object.prototype.hasOwnProperty.call(value, 'en-US')) return value['en-US'];
+            const first = Object.values(value)[0];
+            return first == null || typeof first === 'object' ? '' : first;
         }
-        function move(index, delta) {
-            const target = index + delta;
-            if (target < 0 || target >= order.length) return;
-            [order[index], order[target]] = [order[target], order[index]];
-            renderOrder();
+
+        function entryLabel(fields = {}, fallback = '') {
+            return fieldValue(fields.title) || fieldValue(fields.name) ||
+                fieldValue(fields.subseriesName) || fieldValue(fields.series) || fallback;
         }
-        function setFields() {
+
+        function updateProductSearch(value) {
+            productSearchQuery = String(value || '').trim().toLocaleLowerCase();
+            renderProductsTab();
+        }
+
+        function clearProductSearch() {
+            productSearchQuery = '';
+            const input = document.getElementById('product-search');
+            if (input) {
+                input.value = '';
+                input.focus();
+            }
+            renderProductsTab();
+        }
+
+        function getAuthHeader() {
+            return {
+                'X-Admin-Password': sessionStorage.getItem('admin_password') || ''
+            };
+        }
+
+        function showLoginOverlay() {
+            document.getElementById('lock-overlay').classList.remove('hidden');
+        }
+
+        async function handleLogin(e) {
+            e.preventDefault();
+            const password = document.getElementById('login-password').value;
+            const errorEl = document.getElementById('login-error');
+            errorEl.classList.add('hidden');
+            
+            try {
+                const res = await fetch('/api/admin/verify', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ password })
+                });
+                if (res.ok) {
+                    sessionStorage.setItem('admin_password', password);
+                    document.getElementById('lock-overlay').classList.add('hidden');
+                    await loadDatabase();
+                } else {
+                    errorEl.classList.remove('hidden');
+                }
+            } catch (err) {
+                alert('連線失敗: ' + err.message);
+            }
+        }
+
+        // Load database initially
+        async function loadDatabase() {
+            try {
+                const res = await fetch('/api/data', {
+                    headers: getAuthHeader()
+                });
+                if (res.status === 401) {
+                    showLoginOverlay();
+                    return;
+                }
+                db = await res.json();
+                renderBlocksTab();
+                renderProductsTab();
+                renderStoriesTab();
+                renderMediaTab();
+                renderContactTab();
+            } catch (err) {
+                console.error("Failed to load CMS database:", err);
+            }
+        }
+
+        // Switch Main Tabs
+        function switchTab(tabId) {
+            activeTab = tabId;
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`content-${tabId}`).classList.remove('hidden');
+            
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.className = "tab-btn px-4 py-2 text-sm font-bold bg-white text-gray-700 hover:bg-gray-100 border border-gray-300 transition rounded-none";
+            });
+            
+            const activeBtn = document.getElementById(`tab-${tabId}`);
+            activeBtn.className = "tab-btn px-4 py-2 text-sm font-bold bg-[#b73524] text-white transition rounded-none shadow";
+        }
+
+        // Render Blocks Tab
+        function renderBlocksTab() {
             const b = db.blocks || {};
-            order = db.homepageOrder?.length ? [...db.homepageOrder] : (b.order?.length ? [...b.order] : Object.keys(labels));
-            renderOrder();
+            homeOrder = Array.isArray(db.homepageOrder) && db.homepageOrder.length
+                ? [...db.homepageOrder]
+                : (Array.isArray(b.order) && b.order.length ? [...b.order] : Object.keys(homeOrderLabels));
+            renderHomeOrder();
             document.getElementById('hero-title').value = b.hero?.title || '';
             document.getElementById('hero-slogan').value = b.hero?.slogan || '';
             document.getElementById('hero-desc').value = b.hero?.description || '';
@@ -107,50 +522,967 @@
             document.getElementById('custom-subtitle').value = b.customShop?.subtitle || '';
             document.getElementById('custom-desc').value = b.customShop?.description || '';
         }
-        async function login() {
-            const password = document.getElementById('password').value;
-            status('验证中…');
+
+        function renderHomeOrder() {
+            const list = document.getElementById('home-order-list');
+            if (!list) return;
+            list.innerHTML = homeOrder.map((id, index) => `
+                <div class="flex items-center justify-between gap-2 border border-[#193a5a]/20 bg-white p-3">
+                    <span class="text-xs font-bold text-[#191713]">${index + 1}. ${homeOrderLabels[id] || id}</span>
+                    <span class="flex gap-1">
+                        <button type="button" onclick="moveHomeBlock(${index}, -1)" class="w-7 h-7 border border-gray-300 text-sm hover:bg-[#193a5a] hover:text-white disabled:opacity-30" ${index === 0 ? 'disabled' : ''} aria-label="上移">↑</button>
+                        <button type="button" onclick="moveHomeBlock(${index}, 1)" class="w-7 h-7 border border-gray-300 text-sm hover:bg-[#193a5a] hover:text-white disabled:opacity-30" ${index === homeOrder.length - 1 ? 'disabled' : ''} aria-label="下移">↓</button>
+                    </span>
+                </div>
+            `).join('');
+        }
+
+        function moveHomeBlock(index, delta) {
+            const target = index + delta;
+            if (target < 0 || target >= homeOrder.length) return;
+            [homeOrder[index], homeOrder[target]] = [homeOrder[target], homeOrder[index]];
+            renderHomeOrder();
+        }
+
+        async function renderContactTab() {
+            const select = document.getElementById('contact-qr-asset');
+            if (!select) return;
+            const options = db.assets.map(asset => {
+                const title = fieldValue(asset.fields?.title) || asset.fields?.file?.fileName || asset.sys.id;
+                return `<option value="${asset.sys.id}">${title}</option>`;
+            }).join('');
+            select.innerHTML = `<option value="">-- 尚未選擇 --</option>${options}`;
             try {
-                const res = await fetch(`${API}/api/admin/verify`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ password })
-                });
-                if (!res.ok) throw new Error(res.status === 401 ? '密码错误' : `验证失败 ${res.status}`);
-                sessionStorage.setItem('akashura_admin_password', password);
-                await load();
+                const res = await fetch('/api/contact');
+                const data = await res.json();
+                document.getElementById('contact-enabled').checked = data.enabled !== false;
+                document.getElementById('contact-heading').value = data.heading || 'CONTACT';
+                document.getElementById('contact-description').value = data.description || '';
+                document.getElementById('contact-email').value = data.email || '';
+                document.getElementById('contact-phone').value = data.phone || '';
+                document.getElementById('contact-line').value = data.lineId || '';
+                document.getElementById('contact-instagram').value = data.instagramUrl || '';
+                document.getElementById('contact-facebook').value = data.facebookUrl || '';
+                document.getElementById('contact-address').value = data.address || '';
+                document.getElementById('contact-qr-description').value = data.qrDescription || '';
+                select.value = data.qrAssetId || '';
+                select.dataset.currentUrl = data.qrUrl || '';
+                updateContactQrPreview();
             } catch (error) {
-                status(`${error.message}。若从本机 file:// 开启，请先重新发布 Google 后台 API。`);
+                document.getElementById('contact-status').textContent = `載入失敗：${error.message}`;
             }
         }
-        async function load() {
-            status('读取中…');
-            try {
-                const res = await fetch(`${API}/api/data`, { headers: auth() });
-                if (!res.ok) throw new Error(`读取失败 ${res.status}`);
-                db = await res.json();
-                document.getElementById('login-panel').classList.add('hidden');
-                document.getElementById('editor').classList.remove('hidden');
-                setFields();
-                status('已连接 Google 内容服务');
-            } catch (error) { status(error.message); }
+
+        function updateContactQrPreview() {
+            const select = document.getElementById('contact-qr-asset');
+            const img = document.getElementById('contact-qr-preview');
+            const empty = document.getElementById('contact-qr-empty');
+            const asset = db.assets.find(item => item.sys.id === select.value);
+            let url = asset?.fields?.file?.url || (!select.value ? '' : select.dataset.currentUrl || '');
+            if (url && !url.startsWith('http') && !url.startsWith('/')) url = `https:${url}`;
+            if (url) {
+                img.src = url;
+                img.classList.remove('hidden');
+                empty.classList.add('hidden');
+            } else {
+                img.removeAttribute('src');
+                img.classList.add('hidden');
+                empty.classList.remove('hidden');
+            }
         }
-        async function save() {
-            status('保存中…');
+
+        async function uploadContactQr(event) {
+            const file = event.target.files?.[0];
+            if (!file) return;
+            const status = document.getElementById('contact-status');
+            status.textContent = 'QR Code 上傳中…';
+            const formData = new FormData();
+            formData.append('files', file);
+            try {
+                const res = await fetch('/api/upload', { method: 'POST', headers: getAuthHeader(), body: formData });
+                const result = await res.json();
+                if (!res.ok) throw new Error(result.error || '上傳失敗');
+                const asset = result.assets?.[0];
+                if (!asset) throw new Error('未取得上傳圖片');
+                db.assets.push(asset);
+                const select = document.getElementById('contact-qr-asset');
+                const option = document.createElement('option');
+                option.value = asset.sys.id;
+                option.textContent = fieldValue(asset.fields?.title) || file.name;
+                select.appendChild(option);
+                select.value = asset.sys.id;
+                updateContactQrPreview();
+                status.textContent = 'QR Code 上傳成功，請按儲存發布。';
+            } catch (error) {
+                status.textContent = `上傳失敗：${error.message}`;
+            } finally {
+                event.target.value = '';
+            }
+        }
+
+        async function saveContact(event) {
+            event.preventDefault();
+            const status = document.getElementById('contact-status');
+            status.textContent = '儲存中…';
             const payload = {
-                order,
-                hero: { title: document.getElementById('hero-title').value, slogan: document.getElementById('hero-slogan').value, description: document.getElementById('hero-desc').value },
-                customShop: { title: document.getElementById('custom-title').value, subtitle: document.getElementById('custom-subtitle').value, description: document.getElementById('custom-desc').value }
+                enabled: document.getElementById('contact-enabled').checked,
+                heading: document.getElementById('contact-heading').value.trim(),
+                description: document.getElementById('contact-description').value.trim(),
+                email: document.getElementById('contact-email').value.trim(),
+                phone: document.getElementById('contact-phone').value.trim(),
+                lineId: document.getElementById('contact-line').value.trim(),
+                instagramUrl: document.getElementById('contact-instagram').value.trim(),
+                facebookUrl: document.getElementById('contact-facebook').value.trim(),
+                address: document.getElementById('contact-address').value.trim(),
+                qrAssetId: document.getElementById('contact-qr-asset').value,
+                qrDescription: document.getElementById('contact-qr-description').value.trim(),
             };
             try {
-                const res = await fetch(`${API}/api/data/blocks`, { method: 'POST', headers: { 'Content-Type': 'application/json', ...auth() }, body: JSON.stringify(payload) });
+                const res = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json', ...getAuthHeader() },
+                    body: JSON.stringify(payload),
+                });
                 const result = await res.json();
-                if (!res.ok) throw new Error(result.error || `保存失败 ${res.status}`);
-                db.blocks = payload; db.homepageOrder = order;
-                status('已保存并发布，主站刷新后生效');
-            } catch (error) { status(error.message); }
+                if (!res.ok) throw new Error(result.error || '儲存失敗');
+                status.textContent = '聯絡資訊已儲存並發布到 Contentful。';
+                alert('聯絡資訊儲存成功！');
+            } catch (error) {
+                status.textContent = `儲存失敗：${error.message}`;
+            }
         }
-        if (sessionStorage.getItem('akashura_admin_password')) load();
+
+        // Save Homepage Blocks
+        async function saveBlocks(e) {
+            e.preventDefault();
+            const payload = {
+                hero: {
+                    title: document.getElementById('hero-title').value,
+                    slogan: document.getElementById('hero-slogan').value,
+                    description: document.getElementById('hero-desc').value
+                },
+                customShop: {
+                    title: document.getElementById('custom-title').value,
+                    subtitle: document.getElementById('custom-subtitle').value,
+                    description: document.getElementById('custom-desc').value
+                },
+                order: homeOrder
+            };
+
+            try {
+                const res = await fetch('/api/data/blocks', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...getAuthHeader()
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.status === 401) {
+                    alert('登入逾時或密碼錯誤，請重新登入！');
+                    showLoginOverlay();
+                    return;
+                }
+                if (res.ok) {
+                    alert('首頁區塊文字儲存成功！');
+                    db.blocks = payload;
+                } else {
+                    alert('儲存失敗');
+                }
+            } catch (err) {
+                alert('連線失敗: ' + err.message);
+            }
+        }
+
+        // Switch Product CRUD Levels
+        function switchProductLevel(level) {
+            activeProductLevel = level;
+            document.querySelectorAll('.lvl-btn').forEach(btn => {
+                btn.className = "lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-gray-50 hover:bg-gray-100 text-gray-700 transition";
+            });
+            document.getElementById(`btn-lvl-${level}`).className = "lvl-btn w-full text-left px-3 py-2 text-sm font-bold bg-[#b73524] text-white shadow";
+            
+            const levelNames = {
+                guitar: '產品琴款 (Guitar)',
+                subseries: '子系列 (Subseries)',
+                series: '大系列 (Series)',
+                category: '分類 (Category)',
+                productFamily: '大類 (ProductFamily)'
+            };
+            document.getElementById('products-list-title').textContent = `${levelNames[level]} 管理清單`;
+            renderProductsTab();
+        }
+
+        // Render Product CRUD Level Table
+        function renderProductsTab() {
+            const level = activeProductLevel;
+            const allItems = db.items.filter(item => item.sys?.contentType?.sys?.id === level);
+            const headers = document.getElementById('table-headers');
+            const rows = document.getElementById('table-rows');
+
+            headers.innerHTML = '';
+            rows.innerHTML = '';
+
+            const assetsMap = new Map(db.assets.map(a => [a.sys.id, a]));
+            const itemsMap = new Map(db.items.map(i => [i.sys.id, i]));
+
+            const items = !productSearchQuery ? allItems : allItems.filter(item => {
+                const rawFields = JSON.stringify(item.fields || {});
+                const linkedLabels = db.items
+                    .filter(candidate => candidate.sys?.id && rawFields.includes(candidate.sys.id))
+                    .map(candidate => entryLabel(candidate.fields, candidate.sys.id))
+                    .join(' ');
+                const searchText = `${item.sys?.id || ''} ${entryLabel(item.fields)} ${rawFields} ${linkedLabels}`
+                    .toLocaleLowerCase();
+                return searchText.includes(productSearchQuery);
+            });
+
+            const count = document.getElementById('product-search-count');
+            if (count) count.textContent = productSearchQuery
+                ? `找到 ${items.length} / ${allItems.length} 筆`
+                : `共 ${allItems.length} 筆`;
+
+            const getAssetUrl = (id) => {
+                const asset = assetsMap.get(id);
+                if (!asset?.fields?.file?.url) return 'https://images.unsplash.com/photo-1511379938547-c1f69419868d?w=80&q=80';
+                const url = asset.fields.file.url;
+                return url.startsWith('/') || url.startsWith('http') ? url : 'https:' + url;
+            };
+
+            const getEntryName = (id) => {
+                const item = itemsMap.get(id);
+                if (!item) return '-';
+                return entryLabel(item.fields, id);
+            };
+
+            if (level === 'guitar') {
+                headers.innerHTML = `
+                    <th class="px-4 py-3">圖片</th>
+                    <th class="px-4 py-3">琴款名稱</th>
+                    <th class="px-4 py-3">所屬子系列</th>
+                    <th class="px-4 py-3">動作</th>
+                `;
+                rows.innerHTML = items.map(item => {
+                    const imgId = item.fields?.image?.[0]?.sys?.id || item.fields?.image?.sys?.id;
+                    const subId = item.fields?.subseries?.sys?.id || item.fields?.subseries?.[0]?.sys?.id;
+                    return `
+                        <tr>
+                            <td class="px-4 py-2"><img src="${getAssetUrl(imgId)}" class="h-10 w-16 object-contain bg-white p-1 border"></td>
+                            <td class="px-4 py-2 font-bold">${fieldValue(item.fields?.title) || '未命名'}</td>
+                            <td class="px-4 py-2 text-gray-500">${getEntryName(subId)}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <button onclick="editItem('${item.sys.id}')" class="text-blue-600 hover:underline">編輯</button>
+                                <button onclick="deleteItem('${item.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('') || `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-400">尚無琴款資料。點擊新增按鈕開始。</td></tr>`;
+            } else if (level === 'subseries') {
+                headers.innerHTML = `
+                    <th class="px-4 py-3">圖片</th>
+                    <th class="px-4 py-3">子系列名稱</th>
+                    <th class="px-4 py-3">所屬大系列</th>
+                    <th class="px-4 py-3">動作</th>
+                `;
+                rows.innerHTML = items.map(item => {
+                    const imgId = item.fields?.image?.sys?.id || item.fields?.image?.[0]?.sys?.id;
+                    const seriesId = item.fields?.series?.sys?.id || item.fields?.series?.[0]?.sys?.id;
+                    return `
+                        <tr>
+                            <td class="px-4 py-2"><img src="${getAssetUrl(imgId)}" class="h-10 w-16 object-contain bg-white p-1 border"></td>
+                            <td class="px-4 py-2 font-bold">${entryLabel(item.fields, '未命名')}</td>
+                            <td class="px-4 py-2 text-gray-500">${getEntryName(seriesId)}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <button onclick="editItem('${item.sys.id}')" class="text-blue-600 hover:underline">編輯</button>
+                                <button onclick="deleteItem('${item.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('') || `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-400">尚無子系列資料。</td></tr>`;
+            } else if (level === 'series') {
+                headers.innerHTML = `
+                    <th class="px-4 py-3">圖片</th>
+                    <th class="px-4 py-3">大系列名稱</th>
+                    <th class="px-4 py-3">所屬大類分類</th>
+                    <th class="px-4 py-3">動作</th>
+                `;
+                rows.innerHTML = items.map(item => {
+                    const imgId = item.fields?.seriesImage?.sys?.id || item.fields?.image?.sys?.id;
+                    const catId = item.fields?.category?.sys?.id;
+                    return `
+                        <tr>
+                            <td class="px-4 py-2"><img src="${getAssetUrl(imgId)}" class="h-10 w-16 object-contain bg-white p-1 border"></td>
+                            <td class="px-4 py-2 font-bold">${fieldValue(item.fields?.series) || '未命名'}</td>
+                            <td class="px-4 py-2 text-gray-500">${getEntryName(catId)}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <button onclick="editItem('${item.sys.id}')" class="text-blue-600 hover:underline">編輯</button>
+                                <button onclick="deleteItem('${item.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('') || `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-400">尚無大系列資料。</td></tr>`;
+            } else if (level === 'category') {
+                headers.innerHTML = `
+                    <th class="px-4 py-3">分類名稱</th>
+                    <th class="px-4 py-3">所屬主大類</th>
+                    <th class="px-4 py-3">動作</th>
+                `;
+                rows.innerHTML = items.map(item => {
+                    const famId = item.fields?.productFamily?.sys?.id;
+                    return `
+                        <tr>
+                            <td class="px-4 py-2 font-bold">${item.fields?.name || '未命名'}</td>
+                            <td class="px-4 py-2 text-gray-500">${getEntryName(famId)}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <button onclick="editItem('${item.sys.id}')" class="text-blue-600 hover:underline">編輯</button>
+                                <button onclick="deleteItem('${item.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('') || `<tr><td colspan="3" class="px-4 py-8 text-center text-gray-400">尚無分類資料。</td></tr>`;
+            } else if (level === 'productFamily') {
+                headers.innerHTML = `
+                    <th class="px-4 py-3">大類名稱</th>
+                    <th class="px-4 py-3">Slug 識別</th>
+                    <th class="px-4 py-3">排序 Order</th>
+                    <th class="px-4 py-3">動作</th>
+                `;
+                rows.innerHTML = items.map(item => {
+                    return `
+                        <tr>
+                            <td class="px-4 py-2 font-bold">${item.fields?.name || '未命名'}</td>
+                            <td class="px-4 py-2 font-mono text-xs text-gray-600">${item.fields?.slug || '-'}</td>
+                            <td class="px-4 py-2 font-mono">${item.fields?.order ?? '-'}</td>
+                            <td class="px-4 py-2 space-x-2">
+                                <button onclick="editItem('${item.sys.id}')" class="text-blue-600 hover:underline">編輯</button>
+                                <button onclick="deleteItem('${item.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                            </td>
+                        </tr>
+                    `;
+                }).join('') || `<tr><td colspan="4" class="px-4 py-8 text-center text-gray-400">尚無大類分類資料。</td></tr>`;
+            }
+        }
+
+        // Open Dropdown and picker for assets inside CRUD form
+        let activeAssetFieldId = null;
+        function showAssetSelector(fieldId) {
+            activeAssetFieldId = fieldId;
+            switchTab('media');
+            alert('請在媒體庫點選您需要的圖片，點擊「選擇此圖片」即可自動填入欄位！');
+        }
+
+        function selectAssetForField(assetId) {
+            if (activeAssetFieldId) {
+                document.getElementById(activeAssetFieldId).value = assetId;
+                // Try showing quick preview
+                const previewImg = document.getElementById(`${activeAssetFieldId}-preview`);
+                if (previewImg) {
+                    const assetsMap = new Map(db.assets.map(a => [a.sys.id, a]));
+                    const asset = assetsMap.get(assetId);
+                    if (asset?.fields?.file?.url) {
+                        const url = asset.fields.file.url;
+                        previewImg.src = url.startsWith('/') || url.startsWith('http') ? url : 'https:' + url;
+                    }
+                }
+                activeAssetFieldId = null;
+                switchTab('products');
+            }
+        }
+
+        // Open Create Modal
+        function openCreateModal() {
+            document.getElementById('item-id').value = '';
+            document.getElementById('modal-title').textContent = `新增 ${activeProductLevel} 資料`;
+            buildFormFields();
+            document.getElementById('crud-modal').classList.remove('hidden');
+        }
+
+        // Close CRUD Modal
+        function closeCrudModal() {
+            document.getElementById('crud-modal').classList.add('hidden');
+        }
+
+        // Edit Item
+        function editItem(id) {
+            const item = db.items.find(i => i.sys.id === id);
+            if (!item) return;
+
+            document.getElementById('item-id').value = id;
+            document.getElementById('modal-title').textContent = `編輯 ${activeProductLevel} 資料`;
+            buildFormFields(item.fields);
+            document.getElementById('crud-modal').classList.remove('hidden');
+        }
+
+        // Build Dynamic Form Fields based on level
+        function buildFormFields(fields = {}) {
+            const container = document.getElementById('form-fields');
+            container.innerHTML = '';
+
+            const level = activeProductLevel;
+
+            // List of parents available for selection
+            const getSelectionOptions = (contentType, selectedId) => {
+                const parents = db.items.filter(item => item.sys?.contentType?.sys?.id === contentType);
+                return parents.map(p => `
+                    <option value="${p.sys.id}" ${p.sys.id === selectedId ? 'selected' : ''}>
+                        ${entryLabel(p.fields, p.sys.id)}
+                    </option>
+                `).join('');
+            };
+
+            const getAssetSelectionOptions = (selectedId) => {
+                return db.assets.map(a => `
+                    <option value="${a.sys.id}" ${a.sys.id === selectedId ? 'selected' : ''}>
+                        ${a.fields?.title || a.sys.id} (${a.fields?.file?.fileName || '無檔名'})
+                    </option>
+                `).join('');
+            };
+
+            const getAssetUrl = (id) => {
+                const asset = db.assets.find(a => a.sys.id === id);
+                if (!asset?.fields?.file?.url) return '';
+                const url = asset.fields.file.url;
+                return url.startsWith('/') || url.startsWith('http') ? url : 'https:' + url;
+            };
+
+            if (level === 'guitar') {
+                const subId = fields.subseries?.sys?.id || fields.subseries?.[0]?.sys?.id || '';
+                const imgId = fields.image?.[0]?.sys?.id || fields.image?.sys?.id || '';
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">琴款名稱 (Title)</label>
+                        <input type="text" id="field-title" value="${fieldValue(fields.title)}" class="w-full border p-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">所屬子系列 (Subseries)</label>
+                        <select id="field-subseries" class="w-full border p-2 text-sm" required>
+                            <option value="">-- 選擇子系列 --</option>
+                            ${getSelectionOptions('subseries', subId)}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">主琴圖片 (Image Asset)</label>
+                        <div class="flex gap-2">
+                            <select id="field-image" class="flex-grow border p-2 text-sm">
+                                <option value="">-- 選擇圖片 --</option>
+                                ${getAssetSelectionOptions(imgId)}
+                            </select>
+                            <button type="button" onclick="showAssetSelector('field-image')" class="px-3 py-2 bg-gray-200 text-xs font-bold">媒體庫選取</button>
+                        </div>
+                        <img id="field-image-preview" src="${getAssetUrl(imgId)}" class="mt-2 max-h-32 object-contain bg-gray-50 border">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">琴款說明與規格特色 (Description)</label>
+                        <textarea id="field-description" class="w-full border p-2 text-sm" rows="5">${fieldValue(fields.description)}</textarea>
+                    </div>
+                `;
+            } else if (level === 'subseries') {
+                const seriesId = fields.series?.sys?.id || fields.series?.[0]?.sys?.id || '';
+                const imgId = fields.image?.sys?.id || fields.image?.[0]?.sys?.id || '';
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">子系列名稱 (Name)</label>
+                        <input type="text" id="field-name" value="${entryLabel(fields)}" class="w-full border p-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">所屬大系列 (Series)</label>
+                        <select id="field-series" class="w-full border p-2 text-sm" required>
+                            <option value="">-- 選擇系列 --</option>
+                            ${getSelectionOptions('series', seriesId)}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">系列預覽圖片</label>
+                        <div class="flex gap-2">
+                            <select id="field-image" class="flex-grow border p-2 text-sm">
+                                <option value="">-- 選擇圖片 --</option>
+                                ${getAssetSelectionOptions(imgId)}
+                            </select>
+                            <button type="button" onclick="showAssetSelector('field-image')" class="px-3 py-2 bg-gray-200 text-xs font-bold">媒體庫選取</button>
+                        </div>
+                        <img id="field-image-preview" src="${getAssetUrl(imgId)}" class="mt-2 max-h-32 object-contain bg-gray-50 border">
+                    </div>
+                `;
+            } else if (level === 'series') {
+                const catId = fields.category?.sys?.id || '';
+                const imgId = fields.seriesImage?.sys?.id || fields.image?.sys?.id || '';
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">大系列名稱 (Series Name)</label>
+                        <input type="text" id="field-series-name" value="${fields.series || ''}" class="w-full border p-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">所屬類別分類 (Category)</label>
+                        <select id="field-category" class="w-full border p-2 text-sm" required>
+                            <option value="">-- 選擇分類 --</option>
+                            ${getSelectionOptions('category', catId)}
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">大系列視覺圖</label>
+                        <div class="flex gap-2">
+                            <select id="field-seriesImage" class="flex-grow border p-2 text-sm">
+                                <option value="">-- 選擇圖片 --</option>
+                                ${getAssetSelectionOptions(imgId)}
+                            </select>
+                            <button type="button" onclick="showAssetSelector('field-seriesImage')" class="px-3 py-2 bg-gray-200 text-xs font-bold">媒體庫選取</button>
+                        </div>
+                        <img id="field-seriesImage-preview" src="${getAssetUrl(imgId)}" class="mt-2 max-h-32 object-contain bg-gray-50 border">
+                    </div>
+                `;
+            } else if (level === 'category') {
+                const famId = fields.productFamily?.sys?.id || '';
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">分類名稱 (Name)</label>
+                        <input type="text" id="field-name" value="${fields.name || ''}" class="w-full border p-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">所屬大類 (Product Family)</label>
+                        <select id="field-productFamily" class="w-full border p-2 text-sm" required>
+                            <option value="">-- 選擇主大類 --</option>
+                            ${getSelectionOptions('productFamily', famId)}
+                        </select>
+                    </div>
+                `;
+            } else if (level === 'productFamily') {
+                container.innerHTML = `
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">大類名稱 (Name)</label>
+                        <input type="text" id="field-name" value="${fields.name || ''}" class="w-full border p-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">網址 Slug 標示符</label>
+                        <input type="text" id="field-slug" value="${fields.slug || ''}" class="w-full border p-2 text-sm font-mono" required placeholder="例如: electric-guitars">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">大類描述說明 (Description)</label>
+                        <textarea id="field-description" class="w-full border p-2 text-sm" rows="3">${fields.description || ''}</textarea>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">顯示順序 Order (數字，越小越前面)</label>
+                        <input type="number" id="field-order" value="${fields.order ?? 10}" class="w-full border p-2 text-sm" required>
+                    </div>
+                `;
+            }
+        }
+
+        // Save Crud Item
+        async function saveCrudItem(e) {
+            e.preventDefault();
+            const level = activeProductLevel;
+            const itemId = document.getElementById('item-id').value;
+            const fields = {};
+
+            if (level === 'guitar') {
+                fields.title = document.getElementById('field-title').value;
+                const subId = document.getElementById('field-subseries').value;
+                fields.subseries = [{ sys: { type: "Link", linkType: "Entry", id: subId } }];
+                const imgId = document.getElementById('field-image').value;
+                if (imgId) {
+                    fields.image = [{ sys: { type: "Link", linkType: "Asset", id: imgId } }];
+                }
+                fields.description = document.getElementById('field-description').value;
+            } else if (level === 'subseries') {
+                fields.name = document.getElementById('field-name').value;
+                fields.subseriesName = fields.name;
+                const seriesId = document.getElementById('field-series').value;
+                fields.series = { sys: { type: "Link", linkType: "Entry", id: seriesId } };
+                const imgId = document.getElementById('field-image').value;
+                if (imgId) {
+                    fields.image = { sys: { type: "Link", linkType: "Asset", id: imgId } };
+                }
+            } else if (level === 'series') {
+                fields.series = document.getElementById('field-series-name').value;
+                const catId = document.getElementById('field-category').value;
+                fields.category = { sys: { type: "Link", linkType: "Entry", id: catId } };
+                const imgId = document.getElementById('field-seriesImage').value;
+                if (imgId) {
+                    fields.seriesImage = { sys: { type: "Link", linkType: "Asset", id: imgId } };
+                }
+            } else if (level === 'category') {
+                fields.name = document.getElementById('field-name').value;
+                const famId = document.getElementById('field-productFamily').value;
+                fields.productFamily = { sys: { type: "Link", linkType: "Entry", id: famId } };
+            } else if (level === 'productFamily') {
+                fields.name = document.getElementById('field-name').value;
+                fields.slug = document.getElementById('field-slug').value;
+                fields.description = document.getElementById('field-description').value;
+                fields.order = parseInt(document.getElementById('field-order').value) || 10;
+            }
+
+            const payload = {
+                id: itemId || null,
+                contentTypeId: level,
+                fields: fields
+            };
+
+            try {
+                const res = await fetch('/api/data/entry', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...getAuthHeader()
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.status === 401) {
+                    alert('登入逾時或密碼錯誤，請重新登入！');
+                    showLoginOverlay();
+                    return;
+                }
+                if (res.ok) {
+                    const result = await res.json();
+                    closeCrudModal();
+                    await loadDatabase(); // Refresh data
+                    alert('資料儲存成功！');
+                } else {
+                    const raw = await res.text();
+                    let message = raw;
+                    try { message = JSON.parse(raw).error || raw; } catch (_) {}
+                    alert('儲存失敗：' + (message || `HTTP ${res.status}`));
+                }
+            } catch (err) {
+                alert('連線失敗: ' + err.message);
+            }
+        }
+
+        // Delete Item
+        async function deleteItem(id) {
+            if (!confirm('您確定要刪除這筆資料嗎？此操作無法還原。')) return;
+
+            try {
+                const res = await fetch(`/api/data/entry/${id}`, {
+                    method: 'DELETE',
+                    headers: getAuthHeader()
+                });
+                if (res.status === 401) {
+                    alert('登入逾時或密碼錯誤，請重新登入！');
+                    showLoginOverlay();
+                    return;
+                }
+                if (res.ok) {
+                    await loadDatabase();
+                    alert('資料已成功刪除！');
+                } else {
+                    alert('刪除失敗');
+                }
+            } catch (err) {
+                alert('連線失敗: ' + err.message);
+            }
+        }
+
+
+        // =================== STORIES & NEWS CONTROLLERS ===================
+        function renderStoriesTab() {
+            const stories = db.items.filter(item => item.sys?.contentType?.sys?.id === 'story');
+            const news = db.items.filter(item => item.sys?.contentType?.sys?.id === 'news');
+
+            const storyContainer = document.getElementById('story-list');
+            const newsContainer = document.getElementById('news-list');
+
+            const assetsMap = new Map(db.assets.map(a => [a.sys.id, a]));
+            const getAssetUrl = (id) => {
+                const asset = assetsMap.get(id);
+                if (!asset?.fields?.file?.url) return 'assets/akashura-logo-dragon.jpg';
+                const url = asset.fields.file.url;
+                return url.startsWith('/') || url.startsWith('http') ? url : 'https:' + url;
+            };
+
+            // Stories list
+            storyContainer.innerHTML = stories.map(s => `
+                <div class="p-4 border border-gray-100 bg-gray-50 flex justify-between items-center hover:border-red-500 transition">
+                    <div>
+                        <h4 class="font-bold text-gray-900">${s.fields?.brandStory || '未命名故事'}</h4>
+                        <p class="text-xs text-gray-400 mt-1">ID: ${s.sys.id}</p>
+                    </div>
+                    <div class="space-x-3 text-xs">
+                        <button onclick="openStoryForm('${s.sys.id}')" class="text-blue-600 hover:underline font-bold">編輯</button>
+                        <button onclick="deleteItem('${s.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                    </div>
+                </div>
+            `).join('') || `<p class="text-gray-400 text-center py-6">目前尚無品牌故事。</p>`;
+
+            // News list
+            newsContainer.innerHTML = news.map(n => {
+                const imgId = n.fields?.image?.sys?.id || n.fields?.image?.[0]?.sys?.id;
+                return `
+                    <div class="p-4 border border-gray-100 bg-gray-50 flex gap-4 items-center hover:border-blue-500 transition">
+                        <img src="${getAssetUrl(imgId)}" class="h-12 w-12 object-cover bg-black">
+                        <div class="flex-grow">
+                            <h4 class="font-bold text-gray-900">${n.fields?.title || '未命名消息'}</h4>
+                            <p class="text-xs text-gray-400 mt-1">日期: ${n.fields?.date || '-'} | ID: ${n.sys.id}</p>
+                        </div>
+                        <div class="space-x-3 text-xs">
+                            <button onclick="openNewsForm('${n.sys.id}')" class="text-blue-600 hover:underline font-bold">編輯</button>
+                            <button onclick="deleteItem('${n.sys.id}')" class="text-red-600 hover:underline">刪除</button>
+                        </div>
+                    </div>
+                `;
+            }).join('') || `<p class="text-gray-400 text-center py-6">目前尚無快訊消息。</p>`;
+        }
+
+        function openStoryForm(id = null) {
+            document.getElementById('story-item-id').value = id || '';
+            document.getElementById('story-content-type').value = 'story';
+            document.getElementById('story-modal-title').textContent = id ? '編輯品牌故事' : '新增品牌故事';
+            
+            const fields = id ? db.items.find(i => i.sys.id === id).fields : {};
+            const storyBoxText = (fields.storyBox?.content || [])
+                .filter(node => node.nodeType === 'paragraph')
+                .map(node => node.content?.[0]?.value || '')
+                .join('\n\n');
+
+            const container = document.getElementById('story-form-fields');
+            container.innerHTML = `
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">故事標題 (Brand Story Title)</label>
+                    <input type="text" id="story-title" value="${fields.brandStory || ''}" class="w-full border p-2 text-sm" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">故事核心內容 (內文段落以雙換行分開)</label>
+                    <textarea id="story-body" class="w-full border p-2 text-sm font-light" rows="12" required placeholder="請在此輸入故事內文...">${storyBoxText}</textarea>
+                </div>
+            `;
+            
+            document.getElementById('story-modal').classList.remove('hidden');
+        }
+
+        function openNewsForm(id = null) {
+            document.getElementById('story-item-id').value = id || '';
+            document.getElementById('story-content-type').value = 'news';
+            document.getElementById('story-modal-title').textContent = id ? '編輯快訊消息' : '新增快訊消息';
+            
+            const fields = id ? db.items.find(i => i.sys.id === id).fields : {};
+            const imgId = fields.image?.sys?.id || fields.image?.[0]?.sys?.id || '';
+
+            const getAssetSelectionOptions = (selectedId) => {
+                return db.assets.map(a => `
+                    <option value="${a.sys.id}" ${a.sys.id === selectedId ? 'selected' : ''}>
+                        ${a.fields?.title || a.sys.id}
+                    </option>
+                `).join('');
+            };
+
+            const container = document.getElementById('story-form-fields');
+            container.innerHTML = `
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">消息標題 (News Title)</label>
+                    <input type="text" id="news-title" value="${fields.title || ''}" class="w-full border p-2 text-sm" required>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-gray-700 mb-1">快訊預覽摘要 (Summary)</label>
+                    <textarea id="news-summary" class="w-full border p-2 text-sm" rows="3" required>${fields.summary || ''}</textarea>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">消息發佈日期 (格式: YYYY-MM-DD)</label>
+                        <input type="date" id="news-date" value="${fields.date ? fields.date.substring(0, 10) : new Date().toISOString().substring(0, 10)}" class="w-full border p-2 text-sm" required>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold uppercase text-gray-700 mb-1">消息配圖 (Image Asset)</label>
+                        <select id="news-image" class="w-full border p-2 text-sm">
+                            <option value="">-- 無配圖 / 使用預設 --</option>
+                            ${getAssetSelectionOptions(imgId)}
+                        </select>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('story-modal').classList.remove('hidden');
+        }
+
+        function closeStoryModal() {
+            document.getElementById('story-modal').classList.add('hidden');
+        }
+
+        async function saveStoryOrNews(e) {
+            e.preventDefault();
+            const id = document.getElementById('story-item-id').value;
+            const contentType = document.getElementById('story-content-type').value;
+            const fields = {};
+
+            if (contentType === 'story') {
+                fields.brandStory = document.getElementById('story-title').value;
+                const bodyText = document.getElementById('story-body').value;
+                
+                // Construct standard RichText node hierarchy for contentful mock compatibility
+                const paragraphs = bodyText.split('\n\n').filter(p => p.trim() !== '').map(p => ({
+                    nodeType: 'paragraph',
+                    data: {},
+                    content: [{
+                        nodeType: 'text',
+                        value: p,
+                        marks: [],
+                        data: {}
+                    }]
+                }));
+                fields.storyBox = {
+                    nodeType: 'document',
+                    data: {},
+                    content: paragraphs
+                };
+            } else if (contentType === 'news') {
+                fields.title = document.getElementById('news-title').value;
+                fields.summary = document.getElementById('news-summary').value;
+                fields.date = new Date(document.getElementById('news-date').value).toISOString();
+                const imgId = document.getElementById('news-image').value;
+                if (imgId) {
+                    fields.image = { sys: { type: "Link", linkType: "Asset", id: imgId } };
+                }
+            }
+
+            const payload = {
+                id: id || null,
+                contentTypeId: contentType,
+                fields: fields
+            };
+
+            try {
+                const res = await fetch('/api/data/entry', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        ...getAuthHeader()
+                    },
+                    body: JSON.stringify(payload)
+                });
+                if (res.status === 401) {
+                    alert('登入逾時或密碼錯誤，請重新登入！');
+                    showLoginOverlay();
+                    return;
+                }
+                if (res.ok) {
+                    closeStoryModal();
+                    await loadDatabase();
+                    alert('文章儲存成功！');
+                } else {
+                    alert('儲存失敗');
+                }
+            } catch (err) {
+                alert('儲存連線失敗: ' + err.message);
+            }
+        }
+
+
+        // =================== MEDIA & BATCH UPLOAD CONTROLLERS ===================
+        function renderMediaTab() {
+            const grid = document.getElementById('assets-grid');
+            grid.innerHTML = '';
+
+            const assets = db.assets || [];
+            grid.innerHTML = assets.map(a => {
+                if (!a.fields?.file?.url) return '';
+                const url = a.fields.file.url;
+                const src = url.startsWith('/') || url.startsWith('http') ? url : 'https:' + url;
+                
+                return `
+                    <div class="group relative bg-gray-50 border p-2 flex flex-col items-center justify-between text-center shadow-sm">
+                        <img src="${src}" class="h-24 w-full object-contain mb-2 bg-white">
+                        <p class="text-[10px] text-gray-500 font-bold truncate w-full" title="${a.fields.title}">${a.fields.title}</p>
+                        
+                        <!-- Quick action panel -->
+                        <div class="mt-2 flex flex-col gap-1 w-full text-[10px]">
+                            <button onclick="selectAssetForField('${a.sys.id}')" class="px-2 py-1 bg-green-600 hover:bg-green-700 text-white font-bold w-full rounded-none">
+                                選擇此圖片
+                            </button>
+                            <button onclick="navigator.clipboard.writeText('${src}'); alert('已複製圖片位址！')" class="px-2 py-1 bg-gray-200 hover:bg-gray-300 text-gray-800 w-full rounded-none">
+                                複製位址
+                            </button>
+                        </div>
+                    </div>
+                `;
+            }).join('') || `<p class="text-gray-400 text-center py-10 col-span-full">媒體庫尚無圖片，請在上方區塊批量上傳。</p>`;
+        }
+
+        // Drag and Drop files handling
+        const dropzone = document.getElementById('dropzone');
+        
+        dropzone.addEventListener('click', () => {
+            document.getElementById('file-input').click();
+        });
+
+        dropzone.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            dropzone.classList.add('border-[#b73524]', 'bg-red-50/10');
+        });
+
+        dropzone.addEventListener('dragleave', () => {
+            dropzone.classList.remove('border-[#b73524]', 'bg-red-50/10');
+        });
+
+        dropzone.addEventListener('drop', (e) => {
+            e.preventDefault();
+            dropzone.classList.remove('border-[#b73524]', 'bg-red-50/10');
+            if (e.dataTransfer.files.length) {
+                uploadFiles(e.dataTransfer.files);
+            }
+        });
+
+        function handleFileSelect(e) {
+            if (e.target.files.length) {
+                uploadFiles(e.target.files);
+            }
+        }
+
+        async function uploadFiles(files) {
+            const formData = new FormData();
+            for (let i = 0; i < files.length; i++) {
+                formData.append('files', files[i]);
+            }
+
+            dropzone.innerHTML = `
+                <div class="flex items-center justify-center gap-3">
+                    <svg class="animate-spin h-6 w-6 text-[#b73524]" fill="none" viewBox="0 0 24 24">
+                        <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+                        <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    </svg>
+                    <p class="text-sm font-bold text-gray-700">正在批次上傳圖片中，請稍候...</p>
+                </div>
+            `;
+
+            try {
+                const res = await fetch('/api/upload', {
+                    method: 'POST',
+                    headers: getAuthHeader(),
+                    body: formData
+                });
+                if (res.status === 401) {
+                    alert('登入逾時或密碼錯誤，請重新登入！');
+                    showLoginOverlay();
+                    return;
+                }
+                if (res.ok) {
+                    await loadDatabase(); // Refresh
+                    alert('批量上傳成功！');
+                } else {
+                    alert('上傳失敗');
+                }
+            } catch (err) {
+                alert('連線失敗: ' + err.message);
+            } finally {
+                // Restore dropzone HTML
+                dropzone.innerHTML = `
+                    <svg class="mx-auto h-12 w-12 text-gray-400 mb-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                    </svg>
+                    <p class="text-sm font-bold text-gray-700">拖曳圖片到此處，或是點擊選擇檔案進行批量上傳</p>
+                    <p class="text-xs text-gray-400 mt-1">支援 JPG, PNG, WEBP, SVG</p>
+                    <input type="file" id="file-input" multiple class="hidden" accept="image/*" onchange="handleFileSelect(event)">
+                `;
+            }
+        }
+
+        // Initialize on Load
+        window.addEventListener('DOMContentLoaded', () => {
+            const savedPassword = sessionStorage.getItem('admin_password');
+            if (!savedPassword) {
+                showLoginOverlay();
+            } else {
+                document.getElementById('lock-overlay').classList.add('hidden');
+                loadDatabase();
+            }
+        });
     </script>
 </body>
 </html>
