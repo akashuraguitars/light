@@ -389,6 +389,34 @@
                 order: 30
             }
         ];
+        const defaultHomeOrder = ['families', 'duel', 'yasha', 'featured', 'story'];
+
+        async function loadHomepageSettings() {
+            try {
+                const data = await client.getEntries({ content_type: 'siteSettings', limit: 1 });
+                const fields = data.items?.[0]?.fields || {};
+                const rawOrder = fields.homepageOrder;
+                const order = Array.isArray(rawOrder)
+                    ? rawOrder
+                    : (typeof rawOrder === 'string' ? JSON.parse(rawOrder) : []);
+                return {
+                    order: order.filter(id => defaultHomeOrder.includes(id)),
+                    blocks: fields.homepageBlocks || {}
+                };
+            } catch (error) {
+                console.warn('Homepage settings unavailable; using defaults.', error);
+                return { order: [], blocks: {} };
+            }
+        }
+
+        function applyHomepageOrder(order) {
+            const normalized = [...new Set([...(order || []), ...defaultHomeOrder])]
+                .filter(id => defaultHomeOrder.includes(id));
+            normalized.forEach((id, index) => {
+                const block = document.getElementById(`home-block-${id}`);
+                if (block) block.style.order = String(index + 1);
+            });
+        }
 
         function toggleProducts() { dropdown.classList.toggle('hidden'); storyDropdown.classList.add('hidden'); }
         function toggleStory() { storyDropdown.classList.toggle('hidden'); dropdown.classList.add('hidden'); }
@@ -440,9 +468,10 @@
             symbolWall.classList.add('hidden');
             dropdown.classList.add('hidden');
             storyDropdown.classList.add('hidden');
+            const homepageSettings = await loadHomepageSettings();
 
             view.innerHTML = `
-                <section class="col-span-3">
+                <section id="home-block-families" class="col-span-3">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <button onclick="renderProductFamilyBySlug('electric-guitars')" class="group relative min-h-[340px] overflow-hidden text-left ukiyo-card">
                             <img src="assets/stage-guitars-red.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="电吉他">
@@ -473,7 +502,7 @@
                         </button>
                     </div>
                 </section>
-                <section class="col-span-3 paper-panel overflow-hidden">
+                <section id="home-block-duel" class="col-span-3 paper-panel overflow-hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
                         <div class="relative min-h-[420px] lg:min-h-[560px] bg-[#ead7b3] overflow-hidden">
                             <img src="assets/ukiyo-dual-shura-guitars.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 浮世绘双琴对决图">
@@ -491,7 +520,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="col-span-3 paper-panel overflow-hidden">
+                <section id="home-block-yasha" class="col-span-3 paper-panel overflow-hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-[0.92fr_1.08fr]">
                         <div class="p-7 md:p-12 flex flex-col justify-between bg-[#f8efd9] order-2 lg:order-1">
                             <div>
@@ -506,7 +535,7 @@
                         </div>
                     </div>
                 </section>
-                <section class="col-span-3 py-4 md:py-8">
+                <section id="home-block-featured" class="col-span-3 py-4 md:py-8">
                     <div class="flex items-end justify-between gap-4 mb-5">
                         <div>
                             <p class="text-xs uppercase tracking-[0.35em] text-[#b73524] mb-2">Featured</p>
@@ -518,7 +547,7 @@
                         ${conceptCards()}
                     </div>
                 </section>
-                <section class="col-span-3 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-4">
+                <section id="home-block-story" class="col-span-3 grid grid-cols-1 lg:grid-cols-[0.9fr_1.1fr] gap-4">
                     <div class="p-7 md:p-12 paper-panel">
                         <p class="text-xs uppercase tracking-[0.35em] text-[#b73524] mb-5">Akashura</p>
                         <h2 class="text-3xl md:text-5xl font-black uppercase leading-tight text-[#191713]">先选择你的角色，再选择你的声音。</h2>
@@ -534,6 +563,7 @@
                 </section>
             `;
 
+            applyHomepageOrder(homepageSettings.order);
             renderHomeProducts();
             renderHomeStories();
         }
