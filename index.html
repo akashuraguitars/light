@@ -1444,7 +1444,7 @@
                         const mainUrl = artistLinkedImageUrl(fields.mainImage);
                         return `
                             <button onclick="renderArtistDetail('${escapeText(fields.slug || item.sys.id)}')" class="group col-span-3 md:col-span-1 text-left paper-panel overflow-hidden">
-                                <div class="aspect-[4/5] bg-[#ead7b3] overflow-hidden">
+                                <div class="aspect-[9/16] bg-[#ead7b3] overflow-hidden">
                                     ${mainUrl ? `<img src="${escapeText(mainUrl)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-700" alt="${escapeText(fields.name || 'AKASHURA Artist')}">` : ''}
                                 </div>
                                 <div class="p-6">
@@ -1485,12 +1485,12 @@
                     <article class="col-span-3 paper-panel overflow-hidden">
                         <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
                             <div class="bg-[#ead7b3] p-4 md:p-7">
-                                <div class="aspect-[4/5] overflow-hidden bg-white">
+                                <div class="aspect-[9/16] overflow-hidden bg-white">
                                     ${images[0] ? `<img id="artist-main-photo" src="${escapeText(images[0])}" class="w-full h-full object-cover" alt="${escapeText(fields.name || 'Artist')}">` : ''}
                                 </div>
                                 ${images.length > 1 ? `
                                     <div class="mt-4 grid grid-cols-5 gap-2">
-                                        ${images.map((url, index) => `<button onclick="switchArtistPhoto('${escapeText(url)}', this)" class="artist-thumb ${index === 0 ? 'ring-2 ring-[#b73524]' : ''} aspect-square bg-white overflow-hidden"><img src="${escapeText(url)}" class="w-full h-full object-cover" alt="Artist photo ${index + 1}"></button>`).join('')}
+                                        ${images.map((url, index) => `<button onclick="switchArtistPhoto('${escapeText(url)}', this)" class="artist-thumb ${index === 0 ? 'ring-2 ring-[#b73524]' : ''} aspect-[9/16] bg-white overflow-hidden"><img src="${escapeText(url)}" class="w-full h-full object-cover" alt="Artist photo ${index + 1}"></button>`).join('')}
                                     </div>` : ''}
                             </div>
                             <div class="p-7 md:p-12 bg-[#f8efd9] flex flex-col justify-center">
