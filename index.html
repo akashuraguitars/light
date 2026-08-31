@@ -6,6 +6,14 @@
     <title>Akashura Guitars | 浮世绘电吉他与现代舞台声音</title>
     <meta name="description" content="Akashura Guitars 以浮世绘视觉、现代机能与鲜明角色感打造电吉他。探索 AKSHURA、NEON BEATS 与 Chaos of Blade 系列。">
     <meta name="keywords" content="Akashura Guitars, 电吉他, 金属琴, 浮世绘电吉他, AKSHURA, NEON BEATS, Chaos of Blade">
+    <link rel="canonical" href="https://akashuraguitars.github.io/light/">
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Akashura Guitars | 浮世绘电吉他与现代舞台声音">
+    <meta property="og:description" content="以浮世绘视觉、现代机能与鲜明角色感打造现代电吉他。">
+    <meta property="og:url" content="https://akashuraguitars.github.io/light/">
+    <meta property="og:image" content="https://akashuraguitars.github.io/light/assets/ukiyo-wave-hero.jpg">
+    <meta name="twitter:card" content="summary_large_image">
+    <link rel="preload" as="image" href="assets/ukiyo-wave-hero.jpg" fetchpriority="high">
     <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png?v=6">
     <link rel="shortcut icon" href="favicon.ico?v=6">
     <link rel="apple-touch-icon" href="assets/favicon-192.png?v=6">
@@ -102,6 +110,21 @@
         }
         .theme-link:hover {
             color: var(--vermilion);
+        }
+        .theme-link:focus-visible,
+        button:focus-visible,
+        a:focus-visible {
+            outline: 2px solid var(--vermilion);
+            outline-offset: 4px;
+        }
+        .brand-wordmark {
+            filter: sepia(30%) saturate(70%) hue-rotate(345deg) brightness(0.58) contrast(1.35);
+        }
+        .nav-scroll {
+            scrollbar-width: none;
+        }
+        .nav-scroll::-webkit-scrollbar {
+            display: none;
         }
         .seal {
             display: inline-grid;
@@ -202,28 +225,50 @@
                 flex-basis: 82vw;
                 min-height: 330px;
             }
+            body {
+                background-attachment: scroll;
+            }
+        }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                scroll-behavior: auto !important;
+                transition-duration: 0.01ms !important;
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+            }
         }
     </style>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Brand",
+      "name": "Akashura Guitars",
+      "url": "https://akashuraguitars.github.io/light/",
+      "logo": "https://akashuraguitars.github.io/light/assets/favicon-192.png",
+      "description": "以浮世绘视觉、现代机能与鲜明角色感打造现代电吉他。"
+    }
+    </script>
 </head>
 <body>
+    <a href="#content-view" class="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[70] focus:bg-[#193a5a] focus:px-4 focus:py-3 focus:text-[#f8efd9]">跳至主要内容</a>
 
     <!-- 导航列 -->
-    <nav class="theme-nav p-2 md:p-5 sticky top-0 z-50 border-b backdrop-blur">
-        <div class="w-full px-1 flex flex-wrap justify-center items-center gap-x-2 md:gap-x-8 text-[9px] md:text-sm uppercase font-light">
-            <ul class="flex items-center text-[9px] md:text-sm uppercase font-light" style="gap: clamp(0.25rem, 3vw, 2rem);">
+    <nav class="theme-nav py-3 md:p-5 sticky top-0 z-50 border-b backdrop-blur" aria-label="主要导航">
+        <div class="nav-scroll w-full overflow-x-auto px-4">
+            <ul class="mx-auto flex w-max items-center whitespace-nowrap text-[10px] md:text-sm uppercase font-light" style="gap: clamp(0.7rem, 3vw, 2rem);">
                 <li class="relative">
                     <a href="index.html" onclick="event.preventDefault(); renderHome();" class="theme-link">HOME</a>
                 </li>
                 <li class="relative">
-                    <button onclick="toggleStory()" class="theme-link">STORY</button>
-                    <div id="story-dropdown" class="theme-menu absolute right-0 mt-2 w-64 max-h-[70vh] overflow-y-auto border shadow-xl hidden p-2 z-50"></div>
+                    <button id="story-menu-button" onclick="toggleStory()" class="theme-link" aria-expanded="false" aria-controls="story-dropdown">STORY</button>
+                    <div id="story-dropdown" class="theme-menu fixed left-4 right-4 top-12 mt-2 max-h-[70vh] overflow-y-auto border shadow-xl hidden p-2 z-50 md:absolute md:left-auto md:right-0 md:top-auto md:w-64"></div>
                 </li>
                 <li class="relative">
                     <button onclick="renderNews()" class="theme-link">NEWS</button>
                 </li>
                 <li class="relative">
-                    <button onclick="toggleProducts()" class="theme-link">PRODUCTS</button>
-                    <div id="dropdown-menu" class="theme-menu absolute right-0 mt-2 w-56 max-h-[70vh] overflow-y-auto border shadow-xl hidden p-2 z-50"></div>
+                    <button id="products-menu-button" onclick="toggleProducts()" class="theme-link" aria-expanded="false" aria-controls="dropdown-menu">PRODUCTS</button>
+                    <div id="dropdown-menu" class="theme-menu fixed left-4 right-4 top-12 mt-2 max-h-[70vh] overflow-y-auto border shadow-xl hidden p-2 z-50 md:absolute md:left-auto md:right-0 md:top-auto md:w-56"></div>
                 </li>
                 <li><button onclick="renderArtistHub()" class="theme-link">ARTISTS</button></li>
                 <li><button onclick="renderContact()" class="theme-link">CONTACT</button></li>
@@ -235,7 +280,7 @@
     <div id="brand-header" class="theme-brand flex flex-col items-center justify-center py-2 border-b px-4">
         <div class="w-[85%] md:w-[45%] max-w-[650px] flex flex-col items-center">
             <div id="brand-logo-container" class="w-full flex justify-center mb-0">
-                <img id="brand-image" src="logo.png" alt="Akashura Guitars" class="w-full h-auto object-contain sepia saturate-[170%] hue-rotate-[345deg] contrast-125">
+                <img id="brand-image" src="logo.png" alt="Akashura Guitars" class="brand-wordmark w-full h-auto object-contain" decoding="async">
             </div>
             <h1 id="brand-title" class="text-4xl md:text-5xl font-extrabold tracking-widest text-[#191713] uppercase hidden">Akashura Guitars</h1>
             <p id="brand-slogan" class="theme-slogan w-full text-center text-[9px] md:text-xs font-light uppercase mt-1 tracking-[0.26em] md:tracking-[0.43em] whitespace-nowrap pl-[0.26em] md:pl-[0.43em]">Built for Your Own Sound</p>
@@ -247,20 +292,21 @@
     </div>
 
     <!-- 形象大图 -->
-    <div id="hero-section" class="w-full relative overflow-hidden min-h-[520px] md:min-h-0 md:aspect-[16/5] bg-[#ead7b3] border-b border-[#191713]/25">
-        <img id="hero-image" src="assets/ukiyo-wave-hero.jpg" class="absolute inset-0 w-full h-full object-cover object-center opacity-95" alt="Akashura Guitars ukiyo-e wave hero image">
-        <div class="absolute inset-0 bg-gradient-to-r from-[#f4ead6]/95 via-[#f4ead6]/72 to-[#f4ead6]/12"></div>
+    <div id="hero-section" class="w-full relative overflow-hidden min-h-[680px] md:min-h-0 md:aspect-[16/5] bg-[#ead7b3] border-b border-[#191713]/25">
+        <img id="hero-image" src="assets/ukiyo-wave-hero.jpg" class="absolute inset-0 w-full h-full object-cover object-center opacity-95" alt="Akashura Guitars 浮世绘海浪与江户船景主视觉" fetchpriority="high" decoding="async">
+        <div class="absolute inset-0 bg-gradient-to-b from-[#f4ead6]/5 via-[#f4ead6]/35 to-[#f4ead6]/96 md:bg-gradient-to-r md:from-[#f4ead6]/95 md:via-[#f4ead6]/72 md:to-[#f4ead6]/12"></div>
         <div class="absolute inset-y-0 right-0 w-1/2 bg-[#193a5a]/10 mix-blend-multiply"></div>
         <div class="absolute inset-0 bg-[linear-gradient(135deg,rgba(25,58,90,0.12)_0_1px,transparent_1px_18px)]"></div>
-        <div class="absolute inset-0 flex items-center">
-            <div class="w-full max-w-6xl mx-auto px-8 md:px-12">
-                <div class="seal mb-6" aria-label="赤紅修羅"><span>赤</span><span>紅</span><span>修</span><span>羅</span></div>
-                <p class="text-[10px] md:text-xs uppercase tracking-[0.45em] text-[#193a5a] mb-5">UKIYO-E LIGHT THEME</p>
-                <h2 class="max-w-4xl text-5xl md:text-8xl font-black uppercase leading-none text-[#191713]">AKASHURA<br>GUITARS</h2>
-                <p class="max-w-lg mt-6 text-sm md:text-base text-[#3c3328] font-light leading-relaxed">AKASHURA 不复制过去，也不把外观停在想象里。我们把浮世绘的留白、夜叉的角色感与现代电吉他机能，做成一把能上台、能录音、也能让人记住的琴。</p>
+        <div class="absolute inset-0 flex items-end md:items-center pb-10 md:pb-0">
+            <div class="w-full max-w-6xl mx-auto px-7 md:px-12">
+                <div class="seal mb-4 md:mb-6" aria-label="赤紅修羅"><span>赤</span><span>紅</span><span>修</span><span>羅</span></div>
+                <p id="hero-slogan-text" class="text-[10px] md:text-xs uppercase tracking-[0.4em] text-[#193a5a] mb-4 md:mb-5">UKIYO-E LIGHT THEME</p>
+                <h2 id="hero-title-text" class="max-w-4xl whitespace-pre-line text-5xl md:text-8xl font-black uppercase leading-none text-[#191713]">AKASHURA
+GUITARS</h2>
+                <p id="hero-description-text" class="max-w-lg mt-5 md:mt-6 -ml-3 px-3 py-2 md:ml-0 md:px-0 md:py-0 bg-[#f4ead6]/80 md:bg-transparent text-sm md:text-base text-[#191713] font-medium leading-relaxed drop-shadow-[0_1px_0_rgba(244,234,214,0.95)]">把浮世绘留白、夜叉角色感与现代机能，做成能上台、能录音、让人记住的电吉他。</p>
                 <div class="mt-8 flex flex-wrap gap-3">
                     <button onclick="renderProductFamilyBySlug('electric-guitars')" class="w-full sm:w-auto px-7 py-3 bg-[#193a5a] hover:bg-[#10273f] text-[#f8efd9] text-xs uppercase tracking-widest">探索系列</button>
-                    <button onclick="renderStoryHub()" class="w-full sm:w-auto px-7 py-3 border border-[#191713]/40 hover:border-[#191713] text-[#191713] text-xs uppercase tracking-widest">认识品牌</button>
+                    <button onclick="renderStoryHub()" class="w-full sm:w-auto px-7 py-3 border border-[#191713]/40 bg-[#f4ead6]/75 md:bg-transparent hover:border-[#191713] text-[#191713] text-xs uppercase tracking-widest">认识品牌</button>
                 </div>
             </div>
         </div>
@@ -269,17 +315,14 @@
     <section class="border-b border-[#191713]/15 bg-[#f8efd9]">
         <div class="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-3 divide-y md:divide-y-0 md:divide-x divide-[#191713]/15">
             <div class="px-7 py-7 md:px-10">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-[#b73524] mb-3">01 / Identity</p>
                 <h3 class="text-xl font-black text-[#191713] mb-2">一眼认出的角色感</h3>
                 <p class="text-sm leading-relaxed text-[#3c3328]">让琴身、琴头与配色形成完整识别，不靠通用外型抢存在感。</p>
             </div>
             <div class="px-7 py-7 md:px-10">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-[#b73524] mb-3">02 / Playability</p>
                 <h3 class="text-xl font-black text-[#191713] mb-2">为真实演奏而设计</h3>
                 <p class="text-sm leading-relaxed text-[#3c3328]">从琴颈手感、拾音配置到舞台辨识度，视觉与功能一起成立。</p>
             </div>
             <div class="px-7 py-7 md:px-10">
-                <p class="text-[10px] uppercase tracking-[0.3em] text-[#b73524] mb-3">03 / Your Sound</p>
                 <h3 class="text-xl font-black text-[#191713] mb-2">为你的声音留下位置</h3>
                 <p class="text-sm leading-relaxed text-[#3c3328]">先找到适合你的系列，再从具体规格与配色开始建立自己的舞台形象。</p>
             </div>
@@ -354,8 +397,8 @@
         </div>
     </section>
 
-    <div id="content-view" class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 p-5 md:p-10">
-    </div>
+    <main id="content-view" tabindex="-1" class="container mx-auto grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-6 p-5 md:p-10">
+    </main>
 
     <script>
         const client = contentful.createClient({
@@ -418,8 +461,40 @@
             });
         }
 
-        function toggleProducts() { dropdown.classList.toggle('hidden'); storyDropdown.classList.add('hidden'); }
-        function toggleStory() { storyDropdown.classList.toggle('hidden'); dropdown.classList.add('hidden'); }
+        function applyHomepageContent(blocks = {}) {
+            const heroSettings = blocks.hero || {};
+            const title = document.getElementById('hero-title-text');
+            const slogan = document.getElementById('hero-slogan-text');
+            const description = document.getElementById('hero-description-text');
+            if (title && heroSettings.title?.trim()) title.textContent = heroSettings.title.trim();
+            if (slogan && heroSettings.slogan?.trim()) slogan.textContent = heroSettings.slogan.trim();
+            if (description && heroSettings.description?.trim()) description.textContent = heroSettings.description.trim();
+        }
+
+        function setMenuState(menu, button, open) {
+            menu.classList.toggle('hidden', !open);
+            button?.setAttribute('aria-expanded', String(open));
+        }
+        function closeMenus() {
+            setMenuState(dropdown, document.getElementById('products-menu-button'), false);
+            setMenuState(storyDropdown, document.getElementById('story-menu-button'), false);
+        }
+        function toggleProducts() {
+            const open = dropdown.classList.contains('hidden');
+            closeMenus();
+            setMenuState(dropdown, document.getElementById('products-menu-button'), open);
+        }
+        function toggleStory() {
+            const open = storyDropdown.classList.contains('hidden');
+            closeMenus();
+            setMenuState(storyDropdown, document.getElementById('story-menu-button'), open);
+        }
+        document.addEventListener('keydown', event => {
+            if (event.key === 'Escape') closeMenus();
+        });
+        document.addEventListener('click', event => {
+            if (!event.target.closest('nav')) closeMenus();
+        });
         function escapeText(value) {
             return String(value ?? '').replace(/[&<>'"]/g, char => ({
                 '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
@@ -435,7 +510,9 @@
             const url = new URL(window.location.href);
             url.search = '';
             Object.entries(params).forEach(([key, value]) => url.searchParams.set(key, value));
-            history.replaceState(null, '', `${url.pathname}${url.search}${url.hash}`);
+            const target = `${url.pathname}${url.search}${url.hash}`;
+            const current = `${location.pathname}${location.search}${location.hash}`;
+            if (target !== current) history.pushState(null, '', target);
         }
         function preserveModeLocation(baseUrl) {
             const page = location.pathname.toLowerCase().endsWith('/detail.html') ? 'detail.html' : 'index.html';
@@ -469,12 +546,13 @@
             dropdown.classList.add('hidden');
             storyDropdown.classList.add('hidden');
             const homepageSettings = await loadHomepageSettings();
+            applyHomepageContent(homepageSettings.blocks);
 
             view.innerHTML = `
                 <section id="home-block-families" class="col-span-3">
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <button onclick="renderProductFamilyBySlug('electric-guitars')" class="group relative min-h-[340px] overflow-hidden text-left ukiyo-card">
-                            <img src="assets/stage-guitars-red.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="电吉他">
+                            <img src="assets/stage-guitars-red.jpg" class="absolute inset-0 w-full h-full object-cover opacity-75 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="AKASHURA 电吉他系列" loading="lazy" decoding="async">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#f4ead6] via-[#f4ead6]/20 to-transparent"></div>
                             <div class="absolute left-6 right-6 bottom-6">
                                 <p class="text-[10px] uppercase tracking-[0.34em] text-[#b73524] mb-3">Electric Guitars</p>
@@ -483,7 +561,7 @@
                             </div>
                         </button>
                         <button onclick="renderProductFamilyBySlug('electric-bass')" class="group relative min-h-[340px] overflow-hidden text-left ukiyo-card">
-                            <img src="assets/banner-electric-bass.jpg" class="absolute inset-0 w-full h-full object-cover opacity-78 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="电 Bass">
+                            <img src="assets/banner-electric-bass.jpg" class="absolute inset-0 w-full h-full object-cover opacity-78 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="AKASHURA 电 Bass 系列" loading="lazy" decoding="async">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#f4ead6] via-[#f4ead6]/20 to-transparent"></div>
                             <div class="absolute left-6 right-6 bottom-6">
                                 <p class="text-[10px] uppercase tracking-[0.34em] text-[#b73524] mb-3">Electric Bass</p>
@@ -492,7 +570,7 @@
                             </div>
                         </button>
                         <button onclick="renderProductFamilyBySlug('accessories')" class="group relative min-h-[340px] overflow-hidden text-left ukiyo-card">
-                            <img src="assets/banner-accessories.jpg" class="absolute inset-0 w-full h-full object-cover opacity-78 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="配件">
+                            <img src="assets/banner-accessories.jpg" class="absolute inset-0 w-full h-full object-cover opacity-78 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="AKASHURA 吉他配件" loading="lazy" decoding="async">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#f4ead6] via-[#f4ead6]/20 to-transparent"></div>
                             <div class="absolute left-6 right-6 bottom-6">
                                 <p class="text-[10px] uppercase tracking-[0.34em] text-[#b73524] mb-3">Accessories</p>
@@ -505,7 +583,7 @@
                 <section id="home-block-duel" class="col-span-3 paper-panel overflow-hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
                         <div class="relative min-h-[420px] lg:min-h-[560px] bg-[#ead7b3] overflow-hidden">
-                            <img src="assets/ukiyo-dual-shura-guitars.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 浮世绘双琴对决图">
+                            <img src="assets/ukiyo-dual-shura-guitars.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 浮世绘双琴对决图" loading="lazy" decoding="async">
                         </div>
                         <div class="p-7 md:p-12 flex flex-col justify-between bg-[#f8efd9]">
                             <div>
@@ -531,7 +609,7 @@
                             <button onclick="renderProductFamilyBySlug('electric-guitars')" class="mt-8 w-full sm:w-auto px-6 py-3 bg-[#193a5a] hover:bg-[#10273f] text-[#f8efd9] text-xs uppercase tracking-widest">查看电吉他</button>
                         </div>
                         <div class="relative min-h-[420px] lg:min-h-[560px] bg-[#ead7b3] overflow-hidden order-1 lg:order-2">
-                            <img src="assets/formal-color-logo/yasha/akashura-sapphire-realized-yasha-wide.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 蓝焰夜叉宽幅视觉">
+                            <img src="assets/formal-color-logo/yasha/akashura-sapphire-realized-yasha-wide.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 蓝焰夜叉宽幅视觉" loading="lazy" decoding="async">
                         </div>
                     </div>
                 </section>
@@ -607,7 +685,7 @@
                     return `
                         <a href="detail.html?id=${item.sys.id}" class="group bg-white overflow-hidden block border border-[#191713]/15 shadow-[5px_5px_0_rgba(25,58,90,0.12)]">
                             <div class="relative aspect-[16/9] bg-white overflow-hidden">
-                                <img src="${getImageUrl(item.fields)}" class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-105 transition duration-700" alt="${title}">
+                                <img src="${getImageUrl(item.fields, item.sys.id)}" class="absolute inset-0 w-full h-full object-contain p-4 group-hover:scale-105 transition duration-700" alt="${escapeText(title)}" loading="lazy" decoding="async">
                             </div>
                             <div class="p-5 border-t border-[#191713]/10">
                                 <p class="text-[10px] uppercase tracking-[0.28em] text-[#b73524] mb-2">${line}</p>
@@ -619,6 +697,7 @@
                 }).join('');
             } catch (err) {
                 console.error(err);
+                grid.innerHTML = '<div class="col-span-full border border-[#191713]/15 bg-white/65 p-7 text-center"><p class="font-bold text-[#191713]">产品暂时无法载入</p><button onclick="renderHomeProducts()" class="mt-4 px-5 py-3 border border-[#193a5a] text-[#193a5a] text-xs uppercase tracking-widest">重新载入</button></div>';
             }
         }
 
@@ -630,7 +709,7 @@
                     tier: 'Standard / 1999',
                     tag: 'HSS 泛用平台，保留 Strat 系的速度与亮度',
                     specs: 'Alder 琴身 / 烤枫木加碳纤补强琴颈 / 科技乌木指板 / 25.5 吋弦长 / 24 格不锈钢 Jumbo / 后段陶瓷双线圈 + 中前段 Alnico 5',
-                    image: 'assets/neon-crimson.jpg'
+                    image: 'assets/neon-beats-updates/standard/neon-beats-standard-01.jpg'
                 },
                 {
                     line: 'NEON BEATS',
@@ -638,7 +717,7 @@
                     tier: 'Modern / 3999',
                     tag: '贴皮面板与 HH 可切单，舞台辨识度更高',
                     specs: 'Alder 琴身 + 贴皮面板 / 烤枫木加碳纤补强琴颈 / 烤枫木指板 / 12-16 吋复合弧度 / HH 四芯可切单 / 500k 音量与音色控制',
-                    image: 'assets/neon-indigo.jpg'
+                    image: 'assets/neon-beats-updates/modern/neon-beats-modern-01.jpg'
                 },
                 {
                     line: 'NEON BEATS',
@@ -646,7 +725,7 @@
                     tier: 'Standard / 1999',
                     tag: '干净外观的工作琴，重点放在稳定与反应',
                     specs: 'Bolt-On 结构 / SlimTaper C-shape / 第 1 格 19.7mm 到第 12 格 21.2mm / TUQS 上枕 / Wilkinson VS100N 规格桥系 / D Addario EXL120',
-                    image: 'assets/neon-ivory.jpg'
+                    image: 'assets/neon-beats-updates/standard/neon-beats-standard-02.jpg'
                 },
                 {
                     line: 'NEON BEATS',
@@ -654,7 +733,7 @@
                     tier: 'Modern / 3999',
                     tag: 'Modern 规格的亮色提案，适合流行与融合乐手',
                     specs: '贴皮面板 / 烤枫木指板 / 24 格不锈钢 Jumbo / HH 陶瓷 + Alnico 5 可切单 / 0.022uF orange drop 电容 / 金色五金',
-                    image: 'assets/neon-mint.jpg'
+                    image: 'assets/neon-beats-updates/modern/neon-beats-modern-02.jpg'
                 },
                 {
                     line: 'NEON BEATS',
@@ -662,7 +741,7 @@
                     tier: 'Modern / 3999',
                     tag: '高对比主奏配色，保留 Modern 的双线圈切换弹性',
                     specs: 'Alder 琴身 + 贴皮面板 / 25.5 吋弦长 / 12-16 吋混合弧度 / Gotoh Magnum Lock-Trad 规格弦钮 / Wilkinson VS100N 规格颤音桥',
-                    image: 'assets/neon-magenta.jpg'
+                    image: 'assets/neon-beats-updates/modern/neon-beats-modern-03.jpg'
                 },
                 {
                     line: 'AKSHURA',
@@ -750,7 +829,7 @@
                 .filter(item => !filterLine || item.line === filterLine)
                 .map(item => `
                 <article class="group bg-white text-[#191713] border border-[#191713]/15 shadow-[5px_5px_0_rgba(25,58,90,0.12)] overflow-hidden">
-                    <img src="${item.image}" class="w-full aspect-[16/9] object-contain bg-white p-4" alt="${item.name}">
+                    <img src="${item.image}" class="w-full aspect-[16/9] object-contain bg-white p-4" alt="${escapeText(item.name)}" loading="lazy" decoding="async">
                     <div class="p-5 md:p-6">
                         <p class="text-[10px] uppercase tracking-[0.28em] text-[#7d6f56] mb-2">${item.line}</p>
                         <p class="text-xs uppercase tracking-[0.24em] text-[#b73524] mb-3">${item.tier}</p>
@@ -826,7 +905,7 @@
         function getStoryImage(fields) {
             const assetNode = fields.storyBox?.content?.find(node => node.nodeType === 'embedded-asset-block');
             const file = assetNode?.data?.target?.fields?.file;
-            return file?.url ? 'https:' + file.url : 'assets/akashura-logo-dragon.jpg';
+            return file?.url ? 'https:' + file.url : 'assets/ukiyo-shura-street-story.jpg';
         }
 
         function getStoryHeroImage() {
@@ -879,7 +958,7 @@
                     <div class="hyper-frame">
                         ${frames.map(frame => `
                             <figure class="hyper-card">
-                                <img src="${frame.image}" alt="${frame.title}">
+                                <img src="${frame.image}" alt="${escapeText(frame.title)}" loading="lazy" decoding="async">
                                 <figcaption class="hyper-card-body">
                                     <p class="text-[10px] uppercase tracking-[0.3em] text-[#b73524] mb-3">${frame.label}</p>
                                     <h3 class="text-2xl md:text-3xl font-black uppercase leading-none text-[#191713]">${frame.title}</h3>
@@ -904,7 +983,7 @@
                     return `
                         <button onclick="renderProductFamily('${family.sys.id}')" class="group text-left bg-black/75 border border-white/10 overflow-hidden">
                             <div class="aspect-[16/10] bg-black overflow-hidden">
-                                <img src="${getFamilyBanner(fields)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${fields.name || '产品大类'}">
+                                <img src="${getFamilyBanner(fields)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${escapeText(fields.name || '产品大类')}" loading="lazy" decoding="async">
                             </div>
                             <div class="p-6">
                                 <p class="text-[10px] uppercase tracking-[0.3em] text-red-500 mb-3">${fields.slug || 'product family'}</p>
@@ -928,7 +1007,7 @@
                     const fields = story.fields;
                     return `
                         <button onclick="renderStory('${story.sys.id}')" class="group relative min-h-[320px] text-left ukiyo-card overflow-hidden">
-                            <img src="${getStoryImage(fields)}" class="absolute inset-0 w-full h-full object-cover opacity-70 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="${fields.brandStory || '品牌故事'}">
+                            <img src="${getStoryImage(fields)}" class="absolute inset-0 w-full h-full object-cover opacity-70 mix-blend-multiply group-hover:scale-105 transition duration-700" alt="${escapeText(fields.brandStory || '品牌故事')}" loading="lazy" decoding="async">
                             <div class="absolute inset-0 bg-gradient-to-t from-[#f4ead6] via-[#f4ead6]/35 to-transparent"></div>
                             <div class="absolute left-6 right-6 bottom-6">
                                 <p class="text-[10px] uppercase tracking-[0.3em] text-[#b73524] mb-3">Story</p>
@@ -992,7 +1071,7 @@
                     : fallbackProductFamilies;
 
                 dropdown.innerHTML = families.map(family => `
-                    <button onclick="renderProductFamily('${family.id}'); toggleProducts();" class="block w-full text-left px-4 py-3 hover:bg-red-950/60">
+                    <button onclick="renderProductFamily('${family.id}'); closeMenus();" class="block w-full text-left px-4 py-3 hover:bg-red-950/60">
                         <span class="block text-[10px] uppercase tracking-[0.2em] text-[#b73524] truncate">${family.label}</span>
                         <span class="block pt-1 text-sm font-black text-[#191713] truncate">${family.name}</span>
                     </button>
@@ -1003,12 +1082,12 @@
                 
                 const storyData = await client.getEntries({ content_type: 'story' });
                 storyDropdown.innerHTML = `
-                    <button onclick="renderStoryHub(); toggleStory();" class="block w-full text-left px-4 py-3 hover:bg-red-950/60">
+                    <button onclick="renderStoryHub(); closeMenus();" class="block w-full text-left px-4 py-3 hover:bg-red-950/60">
                         <span class="block text-[10px] uppercase tracking-[0.2em] text-[#b73524]">Story</span>
                         <span class="block pt-1 text-sm font-black text-[#191713] truncate">故事总览</span>
                     </button>
                 ` + storyData.items.map(s => `
-                    <button onclick="renderStory('${s.sys.id}'); toggleStory();" class="block w-full text-left px-4 py-3 hover:bg-red-950/60 uppercase">
+                    <button onclick="renderStory('${s.sys.id}'); closeMenus();" class="block w-full text-left px-4 py-3 hover:bg-red-950/60 uppercase">
                         <span class="block text-sm font-black text-[#191713] truncate">${s.fields.brandStory || '品牌故事'}</span>
                     </button>
                 `).join('');
@@ -1142,7 +1221,7 @@
                     ${filtered.map(s => `
                         <div onclick="renderSubSeries('${s.sys.id}')" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/15">
                             <div class="aspect-[16/9] bg-[#efe3c8] overflow-hidden mb-4 border border-[#191713]/10">
-                                <img src="${getImageUrl(s.fields)}" class="w-full h-full object-contain object-center">
+                                <img src="${getImageUrl(s.fields)}" class="w-full h-full object-contain object-center" alt="${escapeText(s.fields.series || 'AKASHURA 系列')}" loading="lazy" decoding="async">
                             </div>
                             <h2 class="text-xl font-bold uppercase text-[#b73524]">${s.fields.series || '未命名系列'}</h2>
                         </div>
@@ -1162,7 +1241,7 @@
                 view.innerHTML = filtered.map(ss => `
                     <div onclick="renderProducts('${ss.sys.id}')" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] cursor-pointer hover:scale-105 transition text-center border border-[#191713]/15">
                         <div class="aspect-[16/9] bg-[#efe3c8] overflow-hidden mb-4 border border-[#191713]/10">
-                            <img src="${getImageUrl(ss.fields)}" class="w-full h-full object-contain object-center">
+                            <img src="${getImageUrl(ss.fields)}" class="w-full h-full object-contain object-center" alt="${escapeText(ss.fields.name || ss.fields.subseriesName || 'AKASHURA 子系列')}" loading="lazy" decoding="async">
                         </div>
                         <h2 class="text-xl font-bold uppercase text-[#b73524]">${ss.fields.name || ss.fields.subseriesName || '未命名子系列'}</h2>
                     </div>
@@ -1182,7 +1261,7 @@
                 view.innerHTML = filtered.map(g => `
                     <a href="detail.html?id=${g.sys.id}" class="bg-[#f8efd9]/95 p-4 shadow-[5px_5px_0_rgba(25,58,90,0.12)] hover:scale-105 transition block border border-[#191713]/15">
                         <div class="aspect-[16/9] bg-white overflow-hidden mb-4 border border-[#191713]/10">
-                            <img src="${getImageUrl(g.fields, g.sys.id)}" class="w-full h-full object-contain object-center">
+                            <img src="${getImageUrl(g.fields, g.sys.id)}" class="w-full h-full object-contain object-center" alt="${escapeText(g.fields.title || 'AKASHURA 电吉他')}" loading="lazy" decoding="async">
                         </div>
                         <h2 class="font-bold text-lg uppercase text-[#b73524]">${g.fields.title || '未命名琴款'}</h2>
                     </a>
@@ -1230,7 +1309,7 @@
                 const storyCards = data.items.map(story => `
                     <button onclick="renderStory('${story.sys.id}')" class="group text-left bg-black/85 text-white border border-white/10 overflow-hidden">
                         <div class="aspect-[16/10] bg-black overflow-hidden">
-                            <img src="${getStoryImage(story.fields)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${story.fields.brandStory || '品牌故事'}">
+                            <img src="${getStoryImage(story.fields)}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500" alt="${escapeText(story.fields.brandStory || '品牌故事')}" loading="lazy" decoding="async">
                         </div>
                         <div class="p-6">
                             <p class="text-[10px] uppercase tracking-[0.3em] text-red-500 mb-3">数据库文章</p>
@@ -1516,44 +1595,36 @@
             button.classList.add('ring-2', 'ring-[#b73524]');
         }
 
-        initNav();
-        
-        const urlParams = new URLSearchParams(window.location.search);
-        const storyParam = urlParams.get('story');
-        const newsParam = urlParams.get('news');
-        const artistsParam = urlParams.get('artists');
-        const artistParam = urlParams.get('artist');
-        const contactParam = urlParams.get('contact');
-        const familyParam = urlParams.get('family');
-        const familySlugParam = urlParams.get('familySlug');
-        const catParam = urlParams.get('cat');
-        const seriesParam = urlParams.get('series');
-        const subseriesParam = urlParams.get('subseries');
-        if (artistParam) {
-            renderArtistDetail(artistParam);
-        } else if (artistsParam) {
-            renderArtistHub();
-        } else if (contactParam) {
-            renderContact();
-        } else if (storyParam === 'hub') {
-            renderStoryHub();
-        } else if (storyParam) {
-            renderStory(storyParam);
-        } else if (newsParam) {
-            renderNews();
-        } else if (familySlugParam) {
-            renderProductFamilyBySlug(familySlugParam);
-        } else if (familyParam) {
-            renderProductFamily(familyParam);
-        } else if (catParam) {
-            renderSeries(catParam);
-        } else if (seriesParam) {
-            renderSubSeries(seriesParam);
-        } else if (subseriesParam) {
-            renderProducts(subseriesParam);
-        } else {
-            renderHome();
+        function renderCurrentRoute() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const storyParam = urlParams.get('story');
+            const newsParam = urlParams.get('news');
+            const artistsParam = urlParams.get('artists');
+            const artistParam = urlParams.get('artist');
+            const contactParam = urlParams.get('contact');
+            const familyParam = urlParams.get('family');
+            const familySlugParam = urlParams.get('familySlug');
+            const catParam = urlParams.get('cat');
+            const seriesParam = urlParams.get('series');
+            const subseriesParam = urlParams.get('subseries');
+
+            if (artistParam) renderArtistDetail(artistParam);
+            else if (artistsParam) renderArtistHub();
+            else if (contactParam) renderContact();
+            else if (storyParam === 'hub') renderStoryHub();
+            else if (storyParam) renderStory(storyParam);
+            else if (newsParam) renderNews();
+            else if (familySlugParam) renderProductFamilyBySlug(familySlugParam);
+            else if (familyParam) renderProductFamily(familyParam);
+            else if (catParam) renderSeries(catParam);
+            else if (seriesParam) renderSubSeries(seriesParam);
+            else if (subseriesParam) renderProducts(subseriesParam);
+            else renderHome();
         }
+
+        window.addEventListener('popstate', renderCurrentRoute);
+        initNav();
+        renderCurrentRoute();
     </script>
 </body>
 </html>
