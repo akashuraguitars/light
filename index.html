@@ -583,13 +583,14 @@ GUITARS</h2>
                 <section id="home-block-duel" class="col-span-3 paper-panel overflow-hidden">
                     <div class="grid grid-cols-1 lg:grid-cols-[1.08fr_0.92fr]">
                         <div class="relative min-h-[420px] lg:min-h-[560px] bg-[#ead7b3] overflow-hidden">
-                            <img src="assets/ukiyo-dual-shura-guitars.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 浮世绘双琴对决图" loading="lazy" decoding="async">
+                            <img src="assets/music-china-2026.jpg" class="block w-full h-auto object-contain object-center" alt="2026 中国（上海）国际乐器展览会海报，10月28日至31日，上海新国际博览中心" loading="lazy" decoding="async">
                         </div>
                         <div class="p-7 md:p-12 flex flex-col justify-between bg-[#f8efd9]">
                             <div>
-                                <p class="text-xs uppercase tracking-[0.35em] text-[#b73524] mb-5">Woodblock Spirit</p>
-                                <h2 class="text-3xl md:text-5xl font-black uppercase leading-tight text-[#191713]">不是复制经典，是创造角色。</h2>
-                                <p class="mt-5 text-[#3c3328] leading-relaxed">蓝紫的速度感与赤红的重型火力在同一张画面里对撞，像两种演奏人格。AKASHURA 要做的不是另一把仿古琴，而是一把有外型、有声音、有内容传播力的现代电吉他。</p>
+                                <p class="text-xs uppercase tracking-[0.35em] text-[#b73524] mb-5">Music China 2026</p>
+                                <p class="text-lg font-bold text-[#193a5a] mb-5">2026.10.28–31 · 展位 W3E15–18</p>
+                                <h2 class="text-3xl md:text-5xl font-black uppercase leading-tight text-[#191713]">上海见，让你的声音登场。</h2>
+                                <p class="mt-5 text-[#3c3328] leading-relaxed">2026 年，AKASHURA Guitars 即将亮相中国（上海）国际乐器展览会。从鲜明的设计语言，到属于自己的声音表达，我们期待与你面对面，聊吉他、聊音乐，也聊你心中与众不同的舞台。10 月 28—31 日，上海新国际博览中心，W3 馆 E15–18 展位，与你相见。</p>
                             </div>
                             <div class="mt-8 flex items-center gap-4">
                                 <span class="seal" aria-label="赤紅修羅"><span>赤</span><span>紅</span><span>修</span><span>羅</span></span>
@@ -672,10 +673,11 @@ GUITARS</h2>
                     'guitar-akshura-copper-evo',
                     'guitar-akshura-forest-standard'
                 ];
-                const products = data.items
+                const preferredProducts = data.items
                     .filter(item => preferredOrder.includes(item.sys.id))
-                    .sort((a, b) => preferredOrder.indexOf(a.sys.id) - preferredOrder.indexOf(b.sys.id))
-                    .slice(0, 15);
+                    .sort((a, b) => preferredOrder.indexOf(a.sys.id) - preferredOrder.indexOf(b.sys.id));
+                const fallbackProducts = data.items.filter(item => !preferredOrder.includes(item.sys.id));
+                const products = [...preferredProducts, ...fallbackProducts].slice(0, 4);
 
                 if (!products.length) return;
                 grid.innerHTML = products.map(item => {
