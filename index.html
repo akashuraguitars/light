@@ -373,7 +373,7 @@ GUITARS</h2>
                 order: 30
             }
         ];
-        const defaultHomeOrder = ['families', 'duel', 'yasha', 'featured', 'story'];
+        const defaultHomeOrder = ['families', 'duel', 'yasha', 'characters', 'featured', 'story'];
 
         async function loadHomepageSettings() {
             try {
@@ -583,6 +583,25 @@ GUITARS</h2>
                         </div>
                         <div class="relative min-h-[420px] lg:min-h-[560px] bg-[#ead7b3] overflow-hidden order-1 lg:order-2">
                             <img src="assets/formal-color-logo/yasha/akashura-sapphire-realized-yasha-wide.jpg" class="absolute inset-0 w-full h-full object-cover object-center" alt="AKASHURA 蓝焰夜叉宽幅视觉" loading="lazy" decoding="async">
+                        </div>
+                    </div>
+                </section>
+                <section id="home-block-characters" class="col-span-3 paper-panel overflow-hidden bg-[#f8efd9]">
+                    <div class="grid grid-cols-1 lg:grid-cols-[0.78fr_1.22fr]">
+                        <div class="p-7 md:p-12 flex flex-col justify-center bg-[#193a5a] text-[#f8efd9]">
+                            <p class="text-xs uppercase tracking-[0.35em] text-[#d9b56d] mb-5">AKASHURA Characters</p>
+                            <h2 class="text-3xl md:text-5xl font-black leading-tight">赤紅修羅與夜叉，化身卡通公仔。</h2>
+                            <p class="mt-5 leading-relaxed text-[#f8efd9]/85">這兩款卡通公仔分別呈現赤紅修羅與夜叉的角色形象，將品牌故事中的兩位主角帶到你眼前。赤紅修羅以熾烈紅焰與戰意登場；夜叉則以沉靜冷冽的氣質，展現另一種力量。</p>
+                        </div>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 p-5 md:p-8">
+                            <figure class="flex flex-col items-center border border-[#193a5a]/15 bg-white/60 p-4">
+                                <img src="assets/characters/crimson-asura-chibi.webp" class="h-[360px] md:h-[440px] w-full object-contain" alt="赤紅修羅卡通公仔形象" loading="lazy" decoding="async">
+                                <figcaption class="mt-3 text-center"><span class="block text-xl font-black text-[#b73524]">赤紅修羅</span><span class="mt-1 block text-[10px] uppercase tracking-[0.3em] text-[#193a5a]">Crimson Asura</span></figcaption>
+                            </figure>
+                            <figure class="flex flex-col items-center border border-[#193a5a]/15 bg-white/60 p-4">
+                                <img src="assets/characters/yaksha-chibi.webp" class="h-[360px] md:h-[440px] w-full object-contain" alt="夜叉卡通公仔形象" loading="lazy" decoding="async">
+                                <figcaption class="mt-3 text-center"><span class="block text-xl font-black text-[#193a5a]">夜叉</span><span class="mt-1 block text-[10px] uppercase tracking-[0.3em] text-[#b73524]">Yaksha</span></figcaption>
+                            </figure>
                         </div>
                     </div>
                 </section>
